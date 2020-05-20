@@ -8,7 +8,7 @@
 - npx react-native run-android
 
 ## Rough design
-![Rough design](https://github.com/Yoshi20/nfc_epd_app/Rough_design.pdf "Rough design")
+![Rough design](https://github.com/Yoshi20/nfc_epd_app/blob/master/Rough_design.pdf "Rough design")
 
 ## Links
 - https://www.waveshare.com/product/displays/e-paper/epaper-1/7.5inch-e-paper.htm

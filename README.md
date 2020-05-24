@@ -50,7 +50,8 @@ Some problems (usually Metro/watchman/react-native-packager issues) can be solve
   watchman watch-del-all && rm -rf $TMPDIR/react-native-packager-cache-* && rm -rf $TMPDIR/metro-bundler-cache-*
 ```
 
-macOS: also clean the build (Product > Clean build) before restarting
+macOS: also clean the build in Xcode (Product > Clean build) before restarting
+
 4. Restart
 ```bash
   react-native run-android -- --reset-cache

@@ -1,0 +1,4 @@
+src/assets/*
+src/services/heatshrink.js
+src/services/ST25DV.js
+src/screens/CameraTakePicture.js

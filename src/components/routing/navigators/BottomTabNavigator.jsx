@@ -26,7 +26,7 @@ const BottomTabNavigator = ({ navigation }) => {
         component={withStackNavigator('Vorlagen', 'Vorlagen', Vorlagen, {
           headerRight: () => (
             <TouchableOpacity onPress={() => Alert.alert('Alert', 'Touched')}>
-              <Icon name="checkmark" style={{color: "white", fontSize: 40}} />
+              <Icon name="checkmark" style={{ color: 'white', fontSize: 40 }} />
             </TouchableOpacity>
           ),
           headerTitle: 'Vorlagen',

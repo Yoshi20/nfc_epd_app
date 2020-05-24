@@ -1,9 +1,9 @@
 import React from 'react';
-import { TouchableOpacity } from 'react-native'
+import { TouchableOpacity } from 'react-native';
 import {
   Container, Header, Content, Footer, FooterTab,
   Button,
-  Icon,   // https://ionicframework.com/docs/v3/ionicons/
+  Icon, // https://ionicframework.com/docs/v3/ionicons/
   Text,
   Root,
   Toast,
@@ -31,7 +31,6 @@ const ninjaJpgSrc = require('../assets/imgs/testJpg/ninja.jpg');
 const mobyJpgSrc = require('../assets/imgs/testJpg/moby.jpg');
 
 function Home({ navigation, route }) {
-
   const [uploadActivated, setUploadActivated] = React.useState(false);
 
   React.useEffect(() => {
@@ -108,7 +107,7 @@ function Home({ navigation, route }) {
               navigation.navigate('AddImage', {});
             }}
           >
-            <Icon name="add-circle" style={{color: "orange", fontSize: 40}} />
+            <Icon name="add-circle" style={{ color: 'orange', fontSize: 40 }} />
           </TouchableOpacity>
         </Button>
 

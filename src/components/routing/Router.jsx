@@ -3,12 +3,10 @@ import { NavigationContainer } from '@react-navigation/native';
 
 import RootStackNavigator from './navigators/RootStackNavigator';
 
-const Router = () => {
-  return (
-    <NavigationContainer>
-      <RootStackNavigator />
-    </NavigationContainer>
-  );
-};
+const Router = () => (
+  <NavigationContainer>
+    <RootStackNavigator />
+  </NavigationContainer>
+);
 
 export default Router;

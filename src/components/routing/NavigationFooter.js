@@ -1,7 +1,7 @@
 import React from 'react';
 import { Footer, FooterTab, Button, Icon, Text } from 'native-base';
 
-function NavigationFooter({ state, descriptors, navigation }) {
+function NavigationFooter({ state, navigation }) {
   return (
     <Footer>
       <FooterTab>

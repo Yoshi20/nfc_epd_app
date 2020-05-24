@@ -1,16 +1,6 @@
 import React, { useState } from 'react';
-import { Image } from 'react-native';
-import {
-  Container, Header, Content, Footer, FooterTab,
-  Button,
-  Icon, // https://ionicframework.com/docs/v3/ionicons/
-  Text,
-  Root,
-  Toast,
-  Card, CardItem,
-  Left, Body, Right, View,
-  Grid, Row, Col,
-} from 'native-base';
+import { Platform, Image } from 'react-native';
+import { Container, Content, Button, Text, Grid, Row } from 'native-base';
 import ImagePicker from 'react-native-image-picker';
 import ImageResizer from 'react-native-image-resizer';
 import ImageLoad from 'react-native-image-placeholder';
@@ -25,14 +15,20 @@ function AddImage({ navigation, route }) {
   if (route.params.croppedImageFilePath) {
     console.log('blup');
 
-    // setCurrentImagePath(route.params.croppedImageFilePath);
-    // route.params.croppedImageFilePath = "";
-
     const threshold = 100; // 0-255
     const base64 = false;
     const frontColorString = '000000ff';
     const backColorString = 'ffffffff';
-    ImageTools.createBinaryImage(route.params.croppedImageFilePath, 1, threshold, 'JPEG', 1, base64, frontColorString, backColorString)
+    ImageTools.createBinaryImage(
+      route.params.croppedImageFilePath,
+      1,
+      threshold,
+      'JPEG',
+      1,
+      base64,
+      frontColorString,
+      backColorString
+    )
       .then((response) => {
         console.log('blup2');
         // response.uri is the URI of the new image that can now be displayed, uploaded...
@@ -42,7 +38,6 @@ function AddImage({ navigation, route }) {
         // while bOutputBase64 is true, response.base64 is the base64 string of the new image
 
         setCurrentImagePath(response.uri);
-        route.params.croppedImageFilePath = '';
       }).catch((err) => {
         console.log('create binary image failed! err =', err);
       // Oops, something went wrong. Check that the filename is correct and
@@ -55,13 +50,13 @@ function AddImage({ navigation, route }) {
       <Content>
         <Grid>
           <Row>
-            {currentImagePath != '' && (
+            {currentImagePath !== '' && (
               <Image
                 style={{ width: '100%', height: 200, resizeMode: 'stretch' }}
                 source={{ uri: Platform.OS === 'ios' ? currentImagePath : `file://${currentImagePath}` }}
               />
             )}
-            {currentImagePath == '' && (
+            {currentImagePath === '' && (
               <ImageLoad
                 style={{ width: '100%', height: 200 }}
                 source={{ uri: Platform.OS === 'ios' ? currentImagePath : `file://${currentImagePath}` }}
@@ -70,7 +65,7 @@ function AddImage({ navigation, route }) {
           </Row>
           <Button
             block
-            onPress={() => {
+            onPress={() => {
               // get a list of files and directories in the main bundle
               // RNFS.readDir(RNFS.MainBundlePath) // On Android, use "RNFS.DocumentDirectoryPath" (MainBundlePath is not defined)
               RNFS.readDir(PATHS.APP_FILES)
@@ -107,7 +102,7 @@ function AddImage({ navigation, route }) {
 
           <Button
             block
-            onPress={() => {
+            onPress={() => {
               // get a list of files and directories in the main bundle
               // RNFS.readDir(RNFS.MainBundlePath) // On Android, use "RNFS.DocumentDirectoryPath" (MainBundlePath is not defined)
               // RNFS.readFile(PATHS.APP_FILES + '/test.txt', 'ascii')
@@ -130,13 +125,13 @@ function AddImage({ navigation, route }) {
 
           <Button
             block
-            onPress={() => {
+            onPress={() => {
               /* Create app files dir if it doesn't exist yet */
               RNFS.mkdir(PATHS.APP_FILES, { NSURLIsExcludedFromBackupKey: true });
               /* Write file */
               const path = `${PATHS.APP_FILES}/test.txt`;
               RNFS.writeFile(path, 'Lorem ipsum dolor sit amet blup', 'utf8')
-                .then((success) => {
+                .then(() => {
                   console.log('FILE WRITTEN!');
                 })
                 .catch((err) => {
@@ -149,7 +144,7 @@ function AddImage({ navigation, route }) {
 
           <Button
             block
-            onPress={() => {
+            onPress={() => {
               const path = `${PATHS.APP_FILES}/test.txt`;
               return RNFS.unlink(path) // `unlink` will throw an error, if the item to unlink does not exist
                 .then(() => {
@@ -167,7 +162,7 @@ function AddImage({ navigation, route }) {
 
           <Button
             block
-            onPress={() => {
+            onPress={() => {
               const options = {
                 title: 'Load Photo',
                 customButtons: [
@@ -191,8 +186,17 @@ function AddImage({ navigation, route }) {
                 } else if (response.customButton) {
                   console.log('User tapped custom button: ', response.customButton);
                 } else {
-                  ImageResizer.createResizedImage(response.uri, DIMENSIONS.IMAGES.DEFAULT_WIDTH, DIMENSIONS.IMAGES.DEFAULT_HEIGHT, 'JPEG', 100, 0, undefined, false)
-                    .then((response) => {
+                  ImageResizer.createResizedImage(
+                    response.uri,
+                    DIMENSIONS.IMAGES.DEFAULT_WIDTH,
+                    DIMENSIONS.IMAGES.DEFAULT_HEIGHT,
+                    'JPEG',
+                    100,
+                    0,
+                    undefined,
+                    false
+                  )
+                    .then(() => {
                       console.log('Resized image in cache', response.uri);
 
                       /* With image cropper */

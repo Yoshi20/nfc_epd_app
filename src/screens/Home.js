@@ -1,27 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
 import { TouchableOpacity } from 'react-native';
-import {
-  Container, Header, Content, Footer, FooterTab,
-  Button,
-  Icon, // https://ionicframework.com/docs/v3/ionicons/
-  Text,
-  Root,
-  Toast,
-  Card, CardItem,
-  Left, Body, Right, View,
-  Grid, Row, Col,
-} from 'native-base';
-import {
-  BallIndicator,
-  BarIndicator,
-  DotIndicator,
-  MaterialIndicator,
-  PacmanIndicator,
-  PulseIndicator,
-  SkypeIndicator,
-  UIActivityIndicator,
-  WaveIndicator,
-} from 'react-native-indicators'; // https://github.com/n4kz/react-native-indicators
+import { Container, Content, Button, Icon } from 'native-base';
 
 import ImageCard from '../components/ImageCard';
 import image1Raw from '../assets/imgs/testRaw/image1';
@@ -31,23 +10,22 @@ const ninjaJpgSrc = require('../assets/imgs/testJpg/ninja.jpg');
 const mobyJpgSrc = require('../assets/imgs/testJpg/moby.jpg');
 
 function Home({ navigation, route }) {
-  const [uploadActivated, setUploadActivated] = React.useState(false);
+  const [uploadActivated, setUploadActivated] = useState(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (route.params?.post) {
       // Post updated, do something with `route.params.post`
       // For example, send the post to the server
     }
   }, [route.params?.post]);
 
-  const [count, setCount] = React.useState(0);
-  React.useLayoutEffect(() => {
+  useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <Button onPress={() => setCount(c => c + 1)} title="Update count" />
+        <Button onPress={() => console.log('Home screen button pressed')} title="Update count" />
       ),
     });
-  }, [navigation, setCount]);
+  }, []);
 
   function uploadActivatedCallback() {
     setUploadActivated(true);

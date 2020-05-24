@@ -1,21 +1,8 @@
-import React, { useState } from 'react';
-import {
-  Image,
-  TouchableOpacity
-} from 'react-native';
-import {
-  Container, Header, Content, Footer, FooterTab,
-  Button,
-  Icon, // https://ionicframework.com/docs/v3/ionicons/
-  Text,
-  Root,
-  Toast,
-  Card, CardItem,
-  Left, Body, Right, View,
-  Grid, Row, Col,
-} from 'native-base';
+import React from 'react';
+import { Image, TouchableOpacity } from 'react-native';
+import { Container, Content, Icon, Text, Grid, Row, Col } from 'native-base';
 
-function EditImage({ navigation, route }) {
+function EditImage({ route }) {
   return (
     <Container>
       <Content>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container, Content, Text } from 'native-base';
 
-function Vorlagen({ navigation, route }) {
+function Vorlagen() {
   return (
     <Container>
       <Content>

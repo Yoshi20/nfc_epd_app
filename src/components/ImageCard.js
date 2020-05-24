@@ -1,37 +1,23 @@
+/* eslint-disable max-len */
 import React, { useState } from 'react';
-import {
-  Alert,
-  Image,
-  TouchableOpacity
-} from 'react-native';
-import {
-  Container, Header, Content, Footer, FooterTab,
-  Button,
-  Icon, // https://ionicframework.com/docs/v3/ionicons/
-  Text,
-  Root,
-  Toast,
-  Card, CardItem,
-  Left, Body, Right, View,
-  Grid, Row, Col,
-} from 'native-base';
-import {
-  BallIndicator,
-  BarIndicator,
-  DotIndicator,
-  MaterialIndicator,
-  PacmanIndicator,
-  PulseIndicator,
-  SkypeIndicator,
-  UIActivityIndicator,
-  WaveIndicator,
-} from 'react-native-indicators'; // https://github.com/n4kz/react-native-indicators
+import { Alert, Image, TouchableOpacity } from 'react-native';
+import { Button, Icon, Toast, Card, CardItem, Grid, Row, Col } from 'native-base';
+import { UIActivityIndicator } from 'react-native-indicators';
 
 import { ST25DV } from '../services';
 
 function ImageCard(props) {
   const [uploading, setUploading] = useState(false);
   const [uploadingStarted, setUploadingStarted] = useState(false);
+
+  const {
+    navigation,
+    uploadFinishedCallback,
+    imagePath,
+    isImageUploadAllowed,
+    uploadActivatedCallback,
+    imageData,
+  } = props;
 
   function uploadStarted() {
     Toast.show({ text: 'Übertragung gestartet. Bitte warten...', duration: 60000 });
@@ -46,7 +32,7 @@ function ImageCard(props) {
     });
     setUploading(false);
     setUploadingStarted(false);
-    props.uploadFinishedCallback();
+    uploadFinishedCallback();
   }
 
   function uploadFailed() {
@@ -57,7 +43,7 @@ function ImageCard(props) {
     });
     setUploading(false);
     setUploadingStarted(false);
-    props.uploadFinishedCallback();
+    uploadFinishedCallback();
   }
 
   return (
@@ -65,7 +51,7 @@ function ImageCard(props) {
       <CardItem cardBody style={{ padding: 5 }}>
         <Grid>
           <Col size={90}>
-            <Image source={props.imagePath} style={{ height: 200, width: '100%' }} />
+            <Image source={imagePath} style={{ height: 200, width: '100%' }} />
             {uploadingStarted && <UIActivityIndicator style={{ position: 'absolute', top: '39%', left: '43%' }} color="orange" />}
             {/* {uploadingStarted && <PacmanIndicator style={{position: 'absolute', top: '37%', left: '40%'}} color='orange'></PacmanIndicator>} */}
             {/* {uploadingStarted && <BallIndicator style={{position: 'absolute', top: '37%', left: '40%'}} color='orange'></BallIndicator>} */}
@@ -80,15 +66,15 @@ function ImageCard(props) {
                 {!uploading
                   && (
                   <TouchableOpacity
-                    disabled={!props.isImageUploadAllowed}
+                    disabled={!isImageUploadAllowed}
                     onPress={() => {
-                      props.uploadActivatedCallback();
-                      ST25DV.uploadImage(props.imageData, uploadStarted, uploadOk, uploadFailed);
+                      uploadActivatedCallback();
+                      ST25DV.uploadImage(imageData, uploadStarted, uploadOk, uploadFailed);
                       setUploading(true);
                       Toast.show({ text: 'Bild kann nun via NFC aufs Display geladen werden', duration: 3000 });
                     }}
                   >
-                    <Icon name="paper-plane" style={{ color: props.isImageUploadAllowed ? 'black' : 'grey', fontSize: 40, marginTop: 20, marginLeft: 0, marginRight: 0 }} />
+                    <Icon name="paper-plane" style={{ color: isImageUploadAllowed ? 'black' : 'grey', fontSize: 40, marginTop: 20, marginLeft: 0, marginRight: 0 }} />
                     {/* <Icon name="paw" style={{color: "black", fontSize: 40, marginTop: 20, marginLeft: 1, marginRight: 0}} /> */}
                     {/* <Icon name="color-wand" style={{color: "black", fontSize: 40, marginTop: 20, marginLeft: 2, marginRight: 0}} /> */}
                     {/* <Icon name="wifi" style={{color: "black", fontSize: 40, marginTop: 20, marginLeft: 1, marginRight: 0}} /> */}
@@ -102,7 +88,7 @@ function ImageCard(props) {
                       ST25DV._cancel();
                       setUploading(false);
                       setUploadingStarted(false);
-                      props.uploadFinishedCallback();
+                      uploadFinishedCallback();
                       Toast.show({ text: 'Übertragung wurde abgebrochen' });
                     }}
                   >
@@ -116,7 +102,7 @@ function ImageCard(props) {
               <Button transparent>
                 <TouchableOpacity
                   onPress={() => {
-                    props.navigation.navigate('EditImage', { imagePath: props.imagePath });
+                    navigation.navigate('EditImage', { imagePath });
                   }}
                 >
                   <Icon name="create" style={{ color: 'black', fontSize: 40, marginTop: 20, marginLeft: 3, marginRight: 0 }} />

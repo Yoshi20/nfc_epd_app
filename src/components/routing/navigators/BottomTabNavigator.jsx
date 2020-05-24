@@ -12,7 +12,7 @@ import NavigationFooter from '../NavigationFooter';
 
 // since this navigator is set to headerMode: none,
 // each screen must be wrapped with withStackNavigator for a header to be rendered
-const BottomTabNavigator = ({ navigation }) => {
+const BottomTabNavigator = () => {
   const Tab = createBottomTabNavigator();
 
   return (

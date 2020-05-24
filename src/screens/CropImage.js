@@ -1,4 +1,5 @@
 import React from 'react';
+import { Platform } from 'react-native';
 import AmazingCropper, { DefaultFooter } from 'react-native-amazing-cropper';
 import RNFS from 'react-native-fs';
 
@@ -11,6 +12,7 @@ function CropImage({ navigation, route }) {
 
     if (Platform.OS === 'ios') {
       RNFS.copyAssetsFileIOS(croppedImageUri, croppedImageFilePath, 0, 0)
+        // eslint-disable-next-line no-unused-vars
         .then((res) => {
           console.log('FILE WRITTEN');
           console.log(croppedImageFilePath);
@@ -21,6 +23,7 @@ function CropImage({ navigation, route }) {
         });
     } else if (Platform.OS === 'android') {
       RNFS.copyFile(croppedImageUri, croppedImageFilePath)
+      // eslint-disable-next-line no-unused-vars
         .then((res) => {
           console.log('FILE WRITTEN');
           console.log(croppedImageFilePath);

@@ -133,7 +133,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
-        versionName "1.0"        
+        versionName "0.0.1"
         missingDimensionStrategy 'react-native-camera', 'general'   // https://react-native-community.github.io/react-native-camera/docs/installation.html
         multiDexEnabled true
     }
@@ -228,9 +228,4 @@ task copyDownloadableDepsToLibs(type: Copy) {
 }
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
-
-// https://github.com/oblador/react-native-vector-icons#bundled-icon-sets
-project.ext.vectoricons = [
-    iconFontNames: [ 'Ionicons.ttf' ] // Name of the font files you want to copy
-]
 apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"

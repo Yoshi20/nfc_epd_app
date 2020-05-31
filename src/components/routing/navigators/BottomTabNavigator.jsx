@@ -19,27 +19,21 @@ const BottomTabNavigator = () => {
     <Tab.Navigator tabBar={props => <NavigationFooter {...props} />}>
       <Tab.Screen
         name="Home"
-        component={withStackNavigator('Home', 'E-Türschilder', Home)}
+        component={withStackNavigator('Home', 'Meine E-Signs', Home)}
       />
       <Tab.Screen
         name="Vorlagen"
-        component={withStackNavigator('Vorlagen', 'Vorlagen', Vorlagen, {
-          headerRight: () => (
-            <TouchableOpacity onPress={() => Alert.alert('Alert', 'Touched')}>
-              <Icon name="checkmark" style={{ color: 'white', fontSize: 40 }} />
-            </TouchableOpacity>
-          ),
-          headerTitle: 'Vorlagen',
-        })}
-      />
-      <Tab.Screen
-        name="CameraTakePicture"
-        component={withStackNavigator('CameraTakePicture', 'Bild aufnehmen', CameraTakePicture)}
+        component={withStackNavigator('Vorlagen', 'E-Signs Vorlagen', Vorlagen)}
       />
       <Tab.Screen
         name="Settings"
-        options={{ headerTitle: 'Einstellungen' }}
-        component={withStackNavigator('Settings', 'Einstellungen', Settings)}
+        component={withStackNavigator('Settings', 'Einstellungen', Settings, {
+          headerRight: () => (
+            <TouchableOpacity onPress={() => Alert.alert('Alert', 'Touched')}>
+              <Icon name="checkmark" style={{ color: 'white', fontSize: 40, marginRight: 10 }} />
+            </TouchableOpacity>
+          ),
+        })}
       />
     </Tab.Navigator>
   );

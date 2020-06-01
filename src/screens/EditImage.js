@@ -1,6 +1,7 @@
 import React from 'react';
 import { Image, TouchableOpacity } from 'react-native';
-import { Container, Content, Icon, Text, Grid, Row, Col } from 'native-base';
+import { Container, Content, Icon, Text } from 'native-base';
+import { Col, Row, Grid } from 'react-native-easy-grid';
 
 function EditImage({ route }) {
   return (

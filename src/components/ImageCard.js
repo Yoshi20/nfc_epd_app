@@ -1,7 +1,8 @@
 /* eslint-disable max-len */
 import React, { useState } from 'react';
 import { Alert, Image, TouchableOpacity } from 'react-native';
-import { Button, Icon, Toast, Card, CardItem, Grid, Row, Col } from 'native-base';
+import { Button, Icon, Toast, Card, CardItem } from 'native-base';
+import { Col, Row, Grid } from 'react-native-easy-grid';
 import { UIActivityIndicator } from 'react-native-indicators';
 
 import { ST25DV } from '../services';

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Platform, Image } from 'react-native';
-import { Container, Content, Button, Text, Grid, Row } from 'native-base';
+import { Container, Content, Button, Text } from 'native-base';
+import { Col, Row, Grid } from 'react-native-easy-grid';
 import ImagePicker from 'react-native-image-picker';
 import ImageResizer from 'react-native-image-resizer';
 import ImageLoad from 'react-native-image-placeholder';

@@ -3,11 +3,11 @@ import { TouchableOpacity } from 'react-native';
 import { Container, Content, Button, Icon } from 'native-base';
 
 import ImageCard from '../components/ImageCard';
-import image1Raw from '../assets/imgs/testRaw/image1';
-import image5Raw from '../assets/imgs/testRaw/image5';
+import image1Raw from '../assets/images/testRaw/image1';
+import image5Raw from '../assets/images/testRaw/image5';
 
-const ninjaJpgSrc = require('../assets/imgs/testJpg/ninja.jpg');
-const mobyJpgSrc = require('../assets/imgs/testJpg/moby.jpg');
+const ninjaJpgSrc = require('../assets/images/testJpg/ninja.jpg');
+const mobyJpgSrc = require('../assets/images/testJpg/moby.jpg');
 
 function Home({ navigation, route }) {
   const [uploadActivated, setUploadActivated] = useState(false);

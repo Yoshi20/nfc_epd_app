@@ -6,9 +6,9 @@ import AsyncStorage from '@react-native-community/async-storage';
 import ESignCard from '../components/ESignCard';
 import { LocalStorage } from '../services';
 
-const babyJpgSrc = require('../assets/imgs/testJpg/baby.jpg');
-const mobyJpgSrc = require('../assets/imgs/testJpg/moby.jpg');
-const ninjaJpgSrc = require('../assets/imgs/testJpg/ninja.jpg');
+const babyJpgSrc = require('../assets/images/testJpg/baby.jpg');
+const mobyJpgSrc = require('../assets/images/testJpg/moby.jpg');
+const ninjaJpgSrc = require('../assets/images/testJpg/ninja.jpg');
 
 function Vorlagen({ navigation, route }) {
   const [eSigns, setESigns] = useState([]);

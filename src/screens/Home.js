@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Button, Icon, Container, Content, View } from 'native-base';
+import { Button, Icon, Container, Content, View, Text } from 'native-base';
+import { Col, Row, Grid } from 'react-native-easy-grid';
 import { TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import ESignCard from '../components/ESignCard';
@@ -50,6 +51,7 @@ function Home({ navigation, route }) {
   return (
     <Container>
       <Content>
+
         <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
           {
             eSignsArray.map(eSign => (
@@ -79,7 +81,7 @@ function Home({ navigation, route }) {
               deleteESign();
             }}
           >
-            <Icon name="remove-circle" style={{ color: 'orange', fontSize: 40 }} />
+            <Icon name="remove-circle" style={{ color: 'red', fontSize: 40 }} />
           </TouchableOpacity>
         </Button>
 

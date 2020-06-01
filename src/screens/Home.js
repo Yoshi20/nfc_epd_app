@@ -1,91 +1,85 @@
-import React, { useState, useEffect, useLayoutEffect } from 'react';
+import React, { useState } from 'react';
+import { Button, Icon, Container, Content, View } from 'native-base';
 import { TouchableOpacity } from 'react-native';
-import { Container, Content, Button, Icon } from 'native-base';
-
-import ImageCard from '../components/ImageCard';
-import image1Raw from '../assets/imgs/testRaw/image1';
-import image5Raw from '../assets/imgs/testRaw/image5';
-
-const ninjaJpgSrc = require('../assets/imgs/testJpg/ninja.jpg');
-const mobyJpgSrc = require('../assets/imgs/testJpg/moby.jpg');
+import AsyncStorage from '@react-native-community/async-storage';
+import ESignCard from '../components/ESignCard';
+import Logger from '../services';
 
 function Home({ navigation, route }) {
-  const [uploadActivated, setUploadActivated] = useState(false);
+  const [eSignsArray, setESignsArray] = useState([]);
 
-  useEffect(() => {
-    if (route.params?.post) {
-      // Post updated, do something with `route.params.post`
-      // For example, send the post to the server
+  const getESignsArray = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem('eSignsArray');
+      setESignsArray(JSON.parse(jsonValue != null ? jsonValue : []));
+    } catch (e) {
+      Logger.error('getESignsArray failed! Error:', e);
     }
-  }, [route.params?.post]);
+  };
 
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <Button onPress={() => console.log('Home screen button pressed')} title="Update count" />
-      ),
-    });
-  }, []);
+  const addESign = async () => {
+    try {
+      const newESign = {
+        name: `E-Sign #${eSignsArray.length + 1}`,
+        images: [],
+      };
+      const newESignsArray = eSignsArray.slice(); // copy the state array
+      newESignsArray.push(newESign);
+      await AsyncStorage.setItem('eSignsArray', JSON.stringify(newESignsArray));
+      setESignsArray(newESignsArray);
+    } catch (e) {
+      Logger.error('AddESign failed! Error:', e);
+    }
+  };
 
-  function uploadActivatedCallback() {
-    setUploadActivated(true);
-  }
+  const deleteESign = async () => {
+    try {
+      const newESignsArray = eSignsArray.slice(); // copy the state array
+      newESignsArray.pop();
+      await AsyncStorage.setItem('eSignsArray', JSON.stringify(newESignsArray));
+      setESignsArray(newESignsArray);
+    } catch (e) {
+      Logger.error('deleteESign failed! Error:', e);
+    }
+  };
 
-  function uploadFinishedCallback() {
-    setUploadActivated(false);
+  if (eSignsArray.length === 0) {
+    getESignsArray();
   }
 
   return (
     <Container>
       <Content>
-
-        {/* <Button warning vertical
-          onPress={() =>
-            Toast.show({
-              text: "This is a toast test!",
-              buttonText: "Okay",
-              position: "center", // "bottom", "top", "center"
-              duration: 2000,
-              type: "danger",   // "default", "success", "danger", "warning"
-              onClose: (reason) => {  // reason can be "user" or "timeout"
-                console.warn(reason);
-              },
-              // style,
-              // textStyle,
-              // buttonTextStyle,
-              // buttonStyle
-            })}
-        >
-          <Text>Toast test</Text>
-        </Button> */}
-
-        <ImageCard
-          isImageUploadAllowed={!uploadActivated}
-          uploadActivatedCallback={uploadActivatedCallback}
-          uploadFinishedCallback={uploadFinishedCallback}
-          imagePath={mobyJpgSrc}
-          imageData={image5Raw}
-          navigation={navigation}
-          route={route}
-
-        />
-        <ImageCard
-          isImageUploadAllowed={!uploadActivated}
-          uploadActivatedCallback={uploadActivatedCallback}
-          uploadFinishedCallback={uploadFinishedCallback}
-          imagePath={ninjaJpgSrc}
-          imageData={image1Raw}
-          navigation={navigation}
-          route={route}
-        />
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+          {
+            eSignsArray.map(eSign => (
+              <ESignCard
+                navigation={navigation}
+                route={route}
+                name={eSign.name}
+                images={eSign.images}
+              />
+            ))
+          }
+        </View>
 
         <Button block transparent>
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate('AddImage', {});
+              addESign();
             }}
           >
             <Icon name="add-circle" style={{ color: 'orange', fontSize: 40 }} />
+          </TouchableOpacity>
+        </Button>
+
+        <Button block transparent>
+          <TouchableOpacity
+            onPress={() => {
+              deleteESign();
+            }}
+          >
+            <Icon name="remove-circle" style={{ color: 'orange', fontSize: 40 }} />
           </TouchableOpacity>
         </Button>
 

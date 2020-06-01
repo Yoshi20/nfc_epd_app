@@ -3,12 +3,20 @@ import React, { useState } from 'react';
 import { Alert, Image, TouchableOpacity, View } from 'react-native';
 import { Button, Icon, Text, Toast, Card, CardItem, Grid, Row, Col } from 'native-base';
 
-function ESignCard({ name, image1, image2, image3, image4, image5 }) {
+function ESignCard({ navigation, route, name, images }) {
+
+  const imagesList = [];
+  for (let i = 0; i < images.length; i += 1) {
+    imagesList.push(
+      <Image source={images[i]} style={{ height: 100, width: `${100 / images.size}%` }} />
+    );
+  }
+
   return (
     <Card style={{ width: '49%' }}>
       <TouchableOpacity
         onPress={() => {
-          // navigation.navigate('ESign', {name: 'E-Sign Vorlage #1', image1: image1, image2: image2, image3: image3, image4: image4, image5: image5});
+          navigation.navigate('ESign', { name: 'E-Sign Vorlage #1', images });
         }}
       >
         <CardItem cardBody style={{ padding: 5, paddingBottom: 5 }}>
@@ -19,45 +27,10 @@ function ESignCard({ name, image1, image2, image3, image4, image5 }) {
               </View>
             </Row>
 
-            {image5 && (
-              <Row size={80}>
-                <Image source={image1} style={{ height: 100, width: '20%' }} />
-                <Image source={image2} style={{ height: 100, width: '20%' }} />
-                <Image source={image3} style={{ height: 100, width: '20%' }} />
-                <Image source={image4} style={{ height: 100, width: '20%' }} />
-                <Image source={image5} style={{ height: 100, width: '20%' }} />
-              </Row>
-            )}
+            <Row size={80}>
+              {imagesList}
+            </Row>
 
-            {image4 && !image5 && (
-              <Row size={80}>
-                <Image source={image1} style={{ height: 100, width: '25%' }} />
-                <Image source={image2} style={{ height: 100, width: '25%' }} />
-                <Image source={image3} style={{ height: 100, width: '25%' }} />
-                <Image source={image4} style={{ height: 100, width: '25%' }} />
-              </Row>
-            )}
-
-            {image3 && !image4 && !image5 && (
-              <Row size={80}>
-                <Image source={image1} style={{ height: 100, width: '33.33%' }} />
-                <Image source={image2} style={{ height: 100, width: '33.33%' }} />
-                <Image source={image3} style={{ height: 100, width: '33.33%' }} />
-              </Row>
-            )}
-
-            {image2 && !image3 && !image4 && !image5 && (
-              <Row size={80}>
-                <Image source={image1} style={{ height: 100, width: '50%' }} />
-                <Image source={image2} style={{ height: 100, width: '50%' }} />
-              </Row>
-            )}
-
-            {image1 && !image2 && !image3 && !image4 && !image5 && (
-              <Row size={80}>
-                <Image source={image1} style={{ height: 100, width: '100%' }} />
-              </Row>
-            )}
           </Grid>
         </CardItem>
       </TouchableOpacity>

@@ -23,7 +23,7 @@
 Make sure you completed the environment setup for Android.
 
 ```bash
-  react-native run-android # run debug version on connected device
+  npx react-native run-android # run debug version on connected device
 ```
 
 [Android Build Wiki](https://github.com/Yoshi20/nfc_epd_app/wiki/Android-Troubleshooting)
@@ -33,7 +33,7 @@ Make sure you completed the environment setup for Android.
 Make sure you have the package manager running in a terminal beforehand.
 
 ```bash
-  react-native start # from within project directory
+  npx react-native start # from within project directory
 ```
 
 1. Open the `.xcworkspace` file in Xcode
@@ -54,7 +54,7 @@ macOS: also clean the build in Xcode (Product > Clean build) before restarting
 
 4. Restart
 ```bash
-  react-native run-android -- --reset-cache
+  npx react-native run-android -- --reset-cache
 ```
 
 macOS: click on build again in Xcode

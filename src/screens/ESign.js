@@ -1,8 +1,17 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react';
-import { TouchableOpacity } from 'react-native';
-import { Container, Content, Button, Icon } from 'native-base';
+import { TextInput, Alert, TouchableOpacity } from 'react-native';
+import { Container, Content, Button, Icon, Text, View} from 'native-base';
+import { Col, Row, Grid } from 'react-native-easy-grid';
+import ImageCard from '../components/ImageCard';
 
-function ESign({ navigation, route }) {
+import image1Raw from '../assets/images/testRaw/image1';
+import image5Raw from '../assets/images/testRaw/image5';
+
+const ninjaJpgSrc = require('../assets/images/testJpg/ninja.jpg');
+const mobyJpgSrc = require('../assets/images/testJpg/moby.jpg');
+
+function ESign({ navigation, route }) { // route.params: name, images
+  const [name, setName] = useState(route.params?.name);
   const [uploadActivated, setUploadActivated] = useState(false);
 
   useEffect(() => {
@@ -14,8 +23,47 @@ function ESign({ navigation, route }) {
 
   useLayoutEffect(() => {
     navigation.setOptions({
+      // headerTitle: route.params?.name,
+      // headerTitle: <TextInput>{name}</TextInput>,
+      headerTitle: (
+        <TextInput
+          style={{ display: 'block', height: '100%', width: '100%', borderColor: 'white'}}
+          placeholder="Type here to translate!"
+          onChangeText={text => setName(text)}
+          defaultValue={name}
+        />
+      ),
       headerRight: () => (
-        <Button onPress={() => console.log('ESign screen button pressed')} title="Update count" />
+        <Grid style={{ marginTop: 5 }}>
+          <Col style={{ marginRight: 30 }}>
+            <TouchableOpacity onPress={() => {
+              Alert.alert(
+                'E-Signe wirklich löschen?',
+                'Dieser Schritt kann nicht rückgängig gemacht werden.',
+                [
+                  {
+                    text: 'Nein',
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel'
+                  },
+                  {
+                    text: 'Ja',
+                    onPress: () => console.log('OK Pressed')
+                  }
+                ],
+                { cancelable: true }
+              );
+            }}
+            >
+              <Icon name="trash" style={{ color: 'white', fontSize: 40 }} />
+            </TouchableOpacity>
+          </Col>
+          <Col style={{ marginRight: 20 }}>
+            <TouchableOpacity onPress={() => Alert.alert('Alert', 'Touched')}>
+              <Icon name="paper-plane" style={{ color: 'white', fontSize: 40 }} />
+            </TouchableOpacity>
+          </Col>
+        </Grid>
       ),
     });
   }, []);

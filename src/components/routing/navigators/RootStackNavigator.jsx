@@ -1,6 +1,7 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
+import ESign from '../../../screens/ESign';
 import EditImage from '../../../screens/EditImage';
 import AddImage from '../../../screens/AddImage';
 import CropImage from '../../../screens/CropImage';
@@ -20,6 +21,10 @@ const RootStackNavigator = () => {
         name="BottomTabNavigator"
         options={{ headerShown: false }}
         component={BottomTabNavigator}
+      />
+      <Stack.Screen
+        name="ESign"
+        component={ESign}
       />
       <Stack.Screen
         name="EditImage"

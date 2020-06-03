@@ -3,18 +3,12 @@ import React, { useState } from 'react';
 import { Platform, Alert, Image, TouchableOpacity, View } from 'react-native';
 import { Button, Icon, Text, Toast, Card, CardItem } from 'native-base';
 import { Col, Row, Grid } from 'react-native-easy-grid';
+import ImageLoad from 'react-native-image-placeholder';
 import RNFS from 'react-native-fs';
 
 import { PATHS } from '../constants';
 
 function ESignCard({ navigation, route, name, images }) {
-
-  const imagesList = [];
-  for (let i = 0; i < images.length; i += 1) {
-    imagesList.push(
-      <Image source={images[i]} style={{ height: 100, width: `${100 / images.size}%` }} />
-    );
-  }
 
   return (
     <Card style={{ width: '49%' }}>
@@ -179,15 +173,15 @@ function ESignCard({ navigation, route, name, images }) {
           name: file.Name()
       }}); */}
 
-      <Image source={{ uri: `file:${RNFS.PicturesDirectoryPath}/Zelda/zelda.jpg` }} style={{ height: 100, width: `${100 / images.size}%` }} />
+      {/* <Image source={{ uri: `file:${RNFS.PicturesDirectoryPath}/Zelda/zelda.jpg` }} style={{ height: 100, width: `${100 / images.size}%` }} />
       <Image source={{ uri: `file:${PATHS.IMAGES}/moby.jpg` }} style={{ height: 100, width: `${100 / images.size}%` }} />
-      <Image source={{ uri: 'asset:/images/moby.jpg' }} style={{ width: 40, height: 40 }} />
+      <Image source={{ uri: 'asset:/images/moby.jpg' }} style={{ width: 40, height: 40 }} /> */}
 
 
 
       <TouchableOpacity
         onPress={() => {
-          navigation.navigate('ESign', { name: 'E-Sign Vorlage #1', images });
+          navigation.navigate('ESign', { navigation, route, name, images });
         }}
       >
         <CardItem cardBody style={{ padding: 5, paddingBottom: 5 }}>
@@ -199,7 +193,25 @@ function ESignCard({ navigation, route, name, images }) {
             </Row>
 
             <Row size={80}>
-              {imagesList}
+              {(images.length === 0)
+                && (
+                  // <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                  //   <Icon name="laptop" style={{ height: 100, paddingTop: 35 }} />
+                  // </View>
+                  <ImageLoad
+                    source={{ uri: 'file' }}
+                    style={{ height: 100, width: '100%' }}
+                  />
+                )}
+              {(images.length > 0)
+                && (
+                  images.map(image => (
+                    <Image
+                      source={{ uri: Platform.OS === 'ios' ? image.path : `file://${image.path}` }}
+                      style={{ height: 100, width: `${100 / images.length}%` }}
+                    />
+                  ))
+                )}
             </Row>
 
           </Grid>

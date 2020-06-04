@@ -178,7 +178,6 @@ function ESignCard({ navigation, route, name, images }) {
       <Image source={{ uri: 'asset:/images/moby.jpg' }} style={{ width: 40, height: 40 }} /> */}
 
 
-
       <TouchableOpacity
         onPress={() => {
           navigation.navigate('ESign', { navigation, route, name, images });

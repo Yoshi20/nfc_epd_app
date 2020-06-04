@@ -4,6 +4,7 @@ import { Alert, Image, TouchableOpacity } from 'react-native';
 import { Button, Icon, Toast, Card, CardItem } from 'native-base';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import { UIActivityIndicator } from 'react-native-indicators';
+import ImageLoad from 'react-native-image-placeholder';
 
 import { ST25DV } from '../services';
 
@@ -48,11 +49,14 @@ function ImageCard(props) {
   }
 
   return (
-    <Card>
+    <Card style={{ width: '100%' }}>
       <CardItem cardBody style={{ padding: 5 }}>
         <Grid>
           <Col size={90}>
-            <Image source={imagePath} style={{ height: 200, width: '100%' }} />
+            <ImageLoad
+                style={{ width: '100%', height: 200 }}
+                source={{ uri: Platform.OS === 'ios' ? imagePath : `file://${imagePath}` }}
+              />
             {uploadingStarted && <UIActivityIndicator style={{ position: 'absolute', top: '39%', left: '43%' }} color="orange" />}
             {/* {uploadingStarted && <PacmanIndicator style={{position: 'absolute', top: '37%', left: '40%'}} color='orange'></PacmanIndicator>} */}
             {/* {uploadingStarted && <BallIndicator style={{position: 'absolute', top: '37%', left: '40%'}} color='orange'></BallIndicator>} */}

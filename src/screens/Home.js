@@ -59,7 +59,8 @@ function Home({ navigation, route }) {
                 navigation={navigation}
                 route={route}
                 name={eSign.name}
-                images={eSign.images}
+                images={[{ path: 'asdf' }, { path: 'qwer' }]} //blup
+                // images={eSign.images}
               />
             ))
           }

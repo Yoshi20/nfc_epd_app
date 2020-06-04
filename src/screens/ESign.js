@@ -12,6 +12,7 @@ const mobyJpgSrc = require('../assets/images/testJpg/moby.jpg');
 
 function ESign({ navigation, route }) { // route.params: name, images
   const [name, setName] = useState(route.params?.name);
+  const [imagesArray, setImagesArray] = useState(route.params?.images);
   const [uploadActivated, setUploadActivated] = useState(false);
 
   useEffect(() => {
@@ -23,16 +24,14 @@ function ESign({ navigation, route }) { // route.params: name, images
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      // headerTitle: route.params?.name,
-      // headerTitle: <TextInput>{name}</TextInput>,
-      headerTitle: (
-        <TextInput
-          style={{ display: 'block', height: '100%', width: '100%', borderColor: 'white'}}
-          placeholder="Type here to translate!"
-          onChangeText={text => setName(text)}
-          defaultValue={name}
-        />
-      ),
+      headerTitle: route.params?.name,
+      // headerTitle: (
+      //   <TextInput
+      //     style={{height: 40, borderColor: 'white', borderWidth: 1}}
+      //     onChangeText={text => setName(text)}
+      //     value={name}
+      //   />
+      // ),
       headerRight: () => (
         <Grid style={{ marginTop: 5 }}>
           <Col style={{ marginRight: 30 }}>
@@ -76,6 +75,31 @@ function ESign({ navigation, route }) { // route.params: name, images
     setUploadActivated(false);
   }
 
+  const addImage = async () => {
+    try {
+      const newImage = {
+        path: '',
+      };
+      const newImagesArray = imagesArray.slice(); // copy the state array
+      newImagesArray.push(newImage);
+      // await AsyncStorage.setItem('imagesArray', JSON.stringify(newImagesArray));
+      setImagesArray(newImagesArray);
+    } catch (e) {
+      Logger.error('AddImage failed! Error:', e);
+    }
+  };
+
+  const deleteImage = async () => {
+    try {
+      const newImagesArray = imagesArray.slice(); // copy the state array
+      newImagesArray.pop();
+      // await AsyncStorage.setItem('imagesArray', JSON.stringify(newImagesArray));
+      setImagesArray(newImagesArray);
+    } catch (e) {
+      Logger.error('deleteImage failed! Error:', e);
+    }
+  };
+
   return (
     <Container>
       <Content>
@@ -100,7 +124,7 @@ function ESign({ navigation, route }) { // route.params: name, images
           <Text>Toast test</Text>
         </Button> */}
 
-        <ImageCard
+        {/* <ImageCard
           isImageUploadAllowed={!uploadActivated}
           uploadActivatedCallback={uploadActivatedCallback}
           uploadFinishedCallback={uploadFinishedCallback}
@@ -118,15 +142,43 @@ function ESign({ navigation, route }) { // route.params: name, images
           imageData={image1Raw}
           navigation={navigation}
           route={route}
-        />
+        /> */}
+
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+          {
+            imagesArray.map(image => (
+              <ImageCard
+                navigation={navigation}
+                route={route}
+                path={image.path}
+                isImageUploadAllowed={!uploadActivated}
+                uploadActivatedCallback={uploadActivatedCallback}
+                uploadFinishedCallback={uploadFinishedCallback}
+                // imagePath={ninjaJpgSrc}
+                imageData={image1Raw}
+              />
+            ))
+          }
+        </View>
 
         <Button block transparent>
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate('AddImage', {});
+              // navigation.navigate('AddImage', {});
+              addImage();
             }}
           >
             <Icon name="add-circle" style={{ color: 'orange', fontSize: 40 }} />
+          </TouchableOpacity>
+        </Button>
+
+        <Button block transparent>
+          <TouchableOpacity
+            onPress={() => {
+              deleteImage();
+            }}
+          >
+            <Icon name="remove-circle" style={{ color: 'red', fontSize: 40 }} />
           </TouchableOpacity>
         </Button>
 

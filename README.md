@@ -94,10 +94,11 @@ The ImageCard consists of a single image and some action icons. A click on the e
 
 ### Objects
 #### ESign
+- id
 - name
 - images
 #### Image
-- pos
+- id
 - path
 
 ## Links

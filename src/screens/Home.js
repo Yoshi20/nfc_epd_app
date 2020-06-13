@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Icon, Container, Content, View, Text } from 'native-base';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import { TouchableOpacity } from 'react-native';
@@ -11,6 +11,14 @@ import { PATHS } from '../constants';
 
 function Home({ navigation, route }) {
   const [eSignsArray, setESignsArray] = useState([]);
+
+  useEffect(() => {
+    if (route.params?.post) {
+      console.warn(JSON.stringify(route.params.post)); // blup
+      // Post updated, do something with `route.params.post`
+      // For example, send the post to the server
+    }
+  }, [route.params?.post]);
 
   const getESignsArray = async () => {
     try {
@@ -29,6 +37,8 @@ function Home({ navigation, route }) {
   const addESign = async () => {
     try {
       const newESign = {
+        // random hex string id with 16 characters:
+        id: (Math.random().toString(16).substring(2, 10) + Math.random().toString(16).substring(2, 10)),
         name: `E-Sign #${eSignsArray.length + 1}`,
         images: [],
       };
@@ -53,6 +63,13 @@ function Home({ navigation, route }) {
   if (eSignsArray.length === 0) {
     getESignsArray();
   }
+
+  // update the eSignsArray also regularly to recognice if an image was added or removed
+  setTimeout(() => {
+    if (eSignsArray.length > 0) {
+      getESignsArray();
+    }
+  }, 2000);
 
   return (
     <Container>

@@ -8,7 +8,13 @@ import RNFS from 'react-native-fs';
 
 import { PATHS } from '../constants';
 
-function ESignCard({ navigation, route, eSign, originScreen }) {
+function ESignCard(props) {
+  const {
+    navigation,
+    route,
+    eSign,
+    originScreen
+  } = props;
   return (
     <Card style={{ width: '48%' }}>
       <TouchableOpacity

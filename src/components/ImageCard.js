@@ -9,9 +9,6 @@ import ImageLoad from 'react-native-image-placeholder';
 import { ST25DV } from '../services';
 
 function ImageCard(props) {
-  const [uploading, setUploading] = useState(false);
-  const [uploadingStarted, setUploadingStarted] = useState(false);
-
   const {
     navigation,
     route,
@@ -22,6 +19,9 @@ function ImageCard(props) {
     uploadFinishedCallback,
     imageData
   } = props;
+
+  const [uploading, setUploading] = useState(false);
+  const [uploadingStarted, setUploadingStarted] = useState(false);
 
   function uploadStarted() {
     Toast.show({ text: 'Übertragung gestartet. Bitte warten...', duration: 60000 });
@@ -67,7 +67,7 @@ function ImageCard(props) {
             {/* {uploadingStarted && <MaterialIndicator style={{position: 'absolute', top: '37%', left: '40%'}} color='orange'></MaterialIndicator>} */}
 
             {/* blup: */}
-            <Text>{image.pos}</Text>
+            <Text>{image.id}</Text>
             <Text>{Platform.OS === 'ios' ? image.path : `${originScreen === 'Vorlagen' ? 'asset://' : 'file://'}${image.path}` }</Text>
 
           </Col>

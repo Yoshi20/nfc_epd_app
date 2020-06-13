@@ -2,7 +2,9 @@ import React, { useState, useEffect, useLayoutEffect } from 'react';
 import { TextInput, Alert, TouchableOpacity } from 'react-native';
 import { Container, Content, Button, Icon, Text, View} from 'native-base';
 import { Col, Row, Grid } from 'react-native-easy-grid';
+import AsyncStorage from '@react-native-community/async-storage';
 import ImageCard from '../components/ImageCard';
+import Logger from '../services';
 
 import image1Raw from '../assets/images/testRaw/image1';
 import image5Raw from '../assets/images/testRaw/image5';
@@ -17,6 +19,7 @@ function ESign({ navigation, route }) { // route.params: eSign, originScreen
 
   useEffect(() => {
     if (route.params?.post) {
+      console.warn(JSON.stringify(route.params.post)); // blup
       // Post updated, do something with `route.params.post`
       // For example, send the post to the server
     }
@@ -96,16 +99,34 @@ function ESign({ navigation, route }) { // route.params: eSign, originScreen
     setUploadActivated(false);
   }
 
+  const updateESignsArray = async (newImagesArray) => {
+    try {
+      // get eSignsArray from the AsyncStorage
+      const jsonValue = await AsyncStorage.getItem('eSignsArray');
+      const eSignsArray = JSON.parse(jsonValue != null ? jsonValue : []);
+      // find index of the current eSign
+      const currentESignIndex = eSignsArray.findIndex((eS) => {
+        return eS.id === route.params?.eSign.id;
+      });
+      // update eSignsArray in the AsyncStorage
+      eSignsArray[currentESignIndex].images = newImagesArray;
+      await AsyncStorage.setItem('eSignsArray', JSON.stringify(eSignsArray));
+    } catch (e) {
+      Logger.error('updateESignsArray failed! Error:', e);
+    }
+  };
+
   const addImage = async () => {
     try {
       const newImage = {
-        pos: imagesArray.length,
+        // random hex string id with 16 characters:
+        id: (Math.random().toString(16).substring(2, 10) + Math.random().toString(16).substring(2, 10)),
         path: '',
       };
       const newImagesArray = imagesArray.slice(); // copy the state array
       newImagesArray.push(newImage);
-      // await AsyncStorage.setItem('imagesArray', JSON.stringify(newImagesArray));
       setImagesArray(newImagesArray);
+      updateESignsArray(newImagesArray);
     } catch (e) {
       Logger.error('AddImage failed! Error:', e);
     }
@@ -115,8 +136,8 @@ function ESign({ navigation, route }) { // route.params: eSign, originScreen
     try {
       const newImagesArray = imagesArray.slice(); // copy the state array
       newImagesArray.pop();
-      // await AsyncStorage.setItem('imagesArray', JSON.stringify(newImagesArray));
       setImagesArray(newImagesArray);
+      updateESignsArray(newImagesArray);
     } catch (e) {
       Logger.error('deleteImage failed! Error:', e);
     }

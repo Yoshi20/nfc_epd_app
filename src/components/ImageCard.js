@@ -67,7 +67,8 @@ function ImageCard(props) {
             {/* {uploadingStarted && <MaterialIndicator style={{position: 'absolute', top: '37%', left: '40%'}} color='orange'></MaterialIndicator>} */}
 
             {/* blup: */}
-            {/* <Text>{Platform.OS === 'ios' ? image.path : `${screen === 'Vorlagen' ? 'asset://' : 'file://'}${image.path}` }</Text> */}
+            <Text>{image.pos}</Text>
+            <Text>{Platform.OS === 'ios' ? image.path : `${screen === 'Vorlagen' ? 'asset://' : 'file://'}${image.path}` }</Text>
 
           </Col>
           <Col size={10} style={{ paddingLeft: 5 }}>
@@ -170,9 +171,8 @@ function ImageCard(props) {
                           text: 'Ja',
                           onPress: () => {
                             console.log('OK Pressed');
-                            const index = 0; // blup
-                            const newImagesArray = route.params.images;
-                            newImagesArray.splice(index, 1); // this removes image at given position
+                            const newImagesArray = route.params.images.slice();
+                            newImagesArray.splice(image.pos, 1); // this removes one image at given position
                             navigation.setParams({ images: newImagesArray });
                           }
                         }

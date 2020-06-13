@@ -8,20 +8,20 @@ import RNFS from 'react-native-fs';
 
 import { PATHS } from '../constants';
 
-function ESignCard({ navigation, route, name, images, screen }) {
+function ESignCard({ navigation, route, eSign, name, images, screen }) {
 
   return (
     <Card style={{ width: '48%' }}>
       <TouchableOpacity
         onPress={() => {
-          navigation.navigate('ESign', { navigation, route, name, images, screen });
+          navigation.navigate('ESign', { navigation, route, eSign, name, images, screen });
         }}
       >
         <CardItem cardBody style={{ padding: 5, paddingBottom: 5 }}>
           <Grid>
             <Row size={20} style={{ paddingBottom: 5 }}>
               <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <Text adjustsFontSizeToFit numberOfLines={1} style={{ fontWeight: 'bold' }}>{name}</Text>
+                <Text adjustsFontSizeToFit numberOfLines={1} style={{ fontWeight: 'bold' }}>{eSign.name}</Text>
               </View>
             </Row>
 

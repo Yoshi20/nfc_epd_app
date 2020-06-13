@@ -34,7 +34,7 @@ function Vorlagen({ navigation, route }) {
             route={route}
             name="E-Sign Vorlage #1"
             // images={[babyJpgSrc]}
-            images={[{ path: '/images/moby.jpg', byteArray: imageDataMoby }]}
+            images={[{ path: '/images/moby.jpg', byteArray: imageDataMoby, pos: 0 }]}
             screen="Vorlagen"
           />
           <ESignCard
@@ -42,7 +42,7 @@ function Vorlagen({ navigation, route }) {
             route={route}
             name="E-Sign Vorlage #2"
             // images={[mobyJpgSrc, babyJpgSrc]}
-            images={[{ path: '/images/ninja.jpg', byteArray: imageDataNinja }, { path: '/images/moby.jpg', byteArray: imageDataMoby }]}
+            images={[{ path: '/images/ninja.jpg', byteArray: imageDataNinja, pos: 0 }, { path: '/images/moby.jpg', byteArray: imageDataMoby, pos: 1 }]}
             screen="Vorlagen"
           />
           <ESignCard
@@ -50,7 +50,7 @@ function Vorlagen({ navigation, route }) {
             route={route}
             name="E-Sign Vorlage #3"
             // images={[mobyJpgSrc, babyJpgSrc, ninjaJpgSrc]}
-            images={[{ path: '/images/baby.jpg' }, { path: '/images/ninja.jpg', byteArray: imageDataNinja }, { path: '/images/moby.jpg', byteArray: imageDataMoby }]}
+            images={[{ path: '/images/baby.jpg', pos: 0 }, { path: '/images/ninja.jpg', byteArray: imageDataNinja, pos: 1 }, { path: '/images/moby.jpg', byteArray: imageDataMoby, pos: 2 }]}
             screen="Vorlagen"
           />
         </View>

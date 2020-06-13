@@ -21,6 +21,11 @@ function Home({ navigation, route }) {
     }
   };
 
+  const saveESignsArray = async (newESignsArray) => {
+    await AsyncStorage.setItem('eSignsArray', JSON.stringify(newESignsArray));
+    setESignsArray(newESignsArray);
+  };
+
   const addESign = async () => {
     try {
       const newESign = {
@@ -29,8 +34,7 @@ function Home({ navigation, route }) {
       };
       const newESignsArray = eSignsArray.slice(); // copy the state array
       newESignsArray.push(newESign);
-      await AsyncStorage.setItem('eSignsArray', JSON.stringify(newESignsArray));
-      setESignsArray(newESignsArray);
+      saveESignsArray(newESignsArray);
     } catch (e) {
       Logger.error('AddESign failed! Error:', e);
     }
@@ -40,8 +44,7 @@ function Home({ navigation, route }) {
     try {
       const newESignsArray = eSignsArray.slice(); // copy the state array
       newESignsArray.pop();
-      await AsyncStorage.setItem('eSignsArray', JSON.stringify(newESignsArray));
-      setESignsArray(newESignsArray);
+      saveESignsArray(newESignsArray);
     } catch (e) {
       Logger.error('deleteESign failed! Error:', e);
     }
@@ -61,8 +64,9 @@ function Home({ navigation, route }) {
               <ESignCard
                 navigation={navigation}
                 route={route}
+                eSign={eSign}
                 name={eSign.name}
-                images={[{ path: `${RNFS.PicturesDirectoryPath}/Zelda/zelda.jpg` }, { path: `${PATHS.IMAGES}/moby.jpg` }]} // blup
+                images={[{ path: `${RNFS.PicturesDirectoryPath}/Zelda/zelda.jpg`, pos: 0 }, { path: `${PATHS.IMAGES}/moby.jpg`, pos: 1 }]} // blup
                 // images={eSign.images}
               />
             ))

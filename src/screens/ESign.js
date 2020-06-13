@@ -36,7 +36,7 @@ function ESign({ navigation, route }) { // route.params: name, images, screen
         <Grid style={{ marginTop: 5 }}>
           {route.params?.screen !== 'Vorlagen'
             && (
-              <Col style={{ marginRight: 20 }}>
+              <Col style={{ marginTop: 4, marginRight: 30 }}>
                 <TouchableOpacity onPress={() => {
                   Alert.alert(
                     'E-Signe wirklich löschen?',
@@ -56,7 +56,7 @@ function ESign({ navigation, route }) { // route.params: name, images, screen
                   );
                 }}
                 >
-                  <Icon name="trash" style={{ color: 'white', fontSize: 40 }} />
+                  <Icon name="trash" style={{ color: 'white', fontSize: 36 }} />
                 </TouchableOpacity>
               </Col>
             )}
@@ -99,6 +99,7 @@ function ESign({ navigation, route }) { // route.params: name, images, screen
   const addImage = async () => {
     try {
       const newImage = {
+        pos: imagesArray.length,
         path: '',
       };
       const newImagesArray = imagesArray.slice(); // copy the state array

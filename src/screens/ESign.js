@@ -10,9 +10,9 @@ import image5Raw from '../assets/images/testRaw/image5';
 const ninjaJpgSrc = require('../assets/images/testJpg/ninja.jpg');
 const mobyJpgSrc = require('../assets/images/testJpg/moby.jpg');
 
-function ESign({ navigation, route }) { // route.params: name, images, screen
+function ESign({ navigation, route }) { // route.params: eSign, originScreen
   // const [name, setName] = useState(route.params?.name);
-  const [imagesArray, setImagesArray] = useState(route.params?.images);
+  const [imagesArray, setImagesArray] = useState(route.params?.eSign.images);
   const [uploadActivated, setUploadActivated] = useState(false);
 
   useEffect(() => {
@@ -24,22 +24,22 @@ function ESign({ navigation, route }) { // route.params: name, images, screen
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerTitle: route.params?.name,
+      headerTitle: route.params?.eSign.name,
       // headerTitle: (
       //   <TextInput
       //     style={{height: 40, borderColor: 'white', borderWidth: 1}}
       //     onChangeText={text => setName(text)}
-      //     value={name}
+      //     value={eSign.name}
       //   />
       // ),
       headerRight: () => (
         <Grid style={{ marginTop: 5 }}>
-          {route.params?.screen !== 'Vorlagen'
+          {route.params?.originScreen !== 'Vorlagen'
             && (
               <Col style={{ marginTop: 4, marginRight: 30 }}>
                 <TouchableOpacity onPress={() => {
                   Alert.alert(
-                    'E-Signe wirklich löschen?',
+                    'E-Sign wirklich löschen?',
                     'Alle Bilder dieses E-Singes werden gelöscht. Dieser Schritt kann nicht rückgängig gemacht werden.',
                     [
                       {
@@ -63,8 +63,8 @@ function ESign({ navigation, route }) { // route.params: name, images, screen
           <Col style={{ marginRight: 10 }}>
             <TouchableOpacity onPress={() => {
               Alert.alert(
-                'Alle Bilder aufs E-Signe laden?',
-                'Schalte die NFC Funktion ein und lege dein Handy auf die Mitte des E-Signes.',
+                'Alle Bilder aufs E-Sign laden?',
+                'Schalte die NFC Funktion ein und lege dein Handy auf die Mitte des E-Signs.',
                 [
                   {
                     text: 'Nein',
@@ -153,7 +153,7 @@ function ESign({ navigation, route }) { // route.params: name, images, screen
                 navigation={navigation}
                 route={route}
                 image={image}
-                screen={route.params?.screen}
+                originScreen={route.params?.originScreen}
                 isImageUploadAllowed={!uploadActivated}
                 uploadActivatedCallback={uploadActivatedCallback}
                 uploadFinishedCallback={uploadFinishedCallback}
@@ -164,7 +164,7 @@ function ESign({ navigation, route }) { // route.params: name, images, screen
           }
         </View>
 
-        {route.params?.screen !== 'Vorlagen'
+        {route.params?.originScreen !== 'Vorlagen'
           && (
             <Button block transparent>
               <TouchableOpacity
@@ -177,7 +177,7 @@ function ESign({ navigation, route }) { // route.params: name, images, screen
               </TouchableOpacity>
             </Button>
           )}
-        {route.params?.screen !== 'Vorlagen'
+        {route.params?.originScreen !== 'Vorlagen'
           && (
             <Button block transparent>
               <TouchableOpacity

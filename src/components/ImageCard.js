@@ -16,7 +16,7 @@ function ImageCard(props) {
     navigation,
     route,
     image,
-    screen,
+    originScreen,
     isImageUploadAllowed,
     uploadActivatedCallback,
     uploadFinishedCallback,
@@ -57,7 +57,7 @@ function ImageCard(props) {
           <Col size={90}>
             <ImageLoad
               style={{ width: '100%', height: 200 }}
-              source={{ uri: Platform.OS === 'ios' ? image.path : `${screen === 'Vorlagen' ? 'asset://' : 'file://'}${image.path}` }}
+              source={{ uri: Platform.OS === 'ios' ? image.path : `${originScreen === 'Vorlagen' ? 'asset://' : 'file://'}${image.path}` }}
             />
             {uploadingStarted && <UIActivityIndicator style={{ position: 'absolute', top: '39%', left: '43%' }} color="orange" />}
             {/* {uploadingStarted && <PacmanIndicator style={{position: 'absolute', top: '37%', left: '40%'}} color='orange'></PacmanIndicator>} */}
@@ -68,7 +68,7 @@ function ImageCard(props) {
 
             {/* blup: */}
             <Text>{image.pos}</Text>
-            <Text>{Platform.OS === 'ios' ? image.path : `${screen === 'Vorlagen' ? 'asset://' : 'file://'}${image.path}` }</Text>
+            <Text>{Platform.OS === 'ios' ? image.path : `${originScreen === 'Vorlagen' ? 'asset://' : 'file://'}${image.path}` }</Text>
 
           </Col>
           <Col size={10} style={{ paddingLeft: 5 }}>
@@ -78,8 +78,8 @@ function ImageCard(props) {
 
                 {/* <TouchableOpacity onPress={() => {
                   Alert.alert(
-                    'Bild aufs E-Signe laden?',
-                    'Schalte die NFC Funktion ein und lege dein Handy auf die Mitte des E-Signes.',
+                    'Bild aufs E-Sign laden?',
+                    'Schalte die NFC Funktion ein und lege dein Handy auf die Mitte des E-Signs.',
                     [
                       {
                         text: 'Nein',
@@ -143,12 +143,12 @@ function ImageCard(props) {
             <Row>
               <Button transparent disabled>
                 <TouchableOpacity
-                  disabled={route.params?.screen === 'Vorlagen'}
+                  disabled={route.params?.originScreen === 'Vorlagen'}
                   onPress={() => {
                     navigation.navigate('EditImage', { image });
                   }}
                 >
-                  <Icon name="create" style={{ color: ((route.params?.screen === 'Vorlagen') ? 'gray' : 'balck'), fontSize: 40, marginTop: 20, marginLeft: 3, marginRight: 0 }} />
+                  <Icon name="create" style={{ color: ((route.params?.originScreen === 'Vorlagen') ? 'gray' : 'balck'), fontSize: 40, marginTop: 20, marginLeft: 3, marginRight: 0 }} />
                 </TouchableOpacity>
               </Button>
             </Row>
@@ -156,7 +156,7 @@ function ImageCard(props) {
             <Row>
               <Button transparent>
                 <TouchableOpacity
-                  disabled={route.params?.screen === 'Vorlagen'}
+                  disabled={route.params?.originScreen === 'Vorlagen'}
                   onPress={() => {
                     Alert.alert(
                       'Bild wirklich löschen?',
@@ -171,7 +171,7 @@ function ImageCard(props) {
                           text: 'Ja',
                           onPress: () => {
                             console.log('OK Pressed');
-                            const newImagesArray = route.params.images.slice();
+                            const newImagesArray = route.params.eSign.images.slice();
                             newImagesArray.splice(image.pos, 1); // this removes one image at given position
                             navigation.setParams({ images: newImagesArray });
                           }
@@ -181,7 +181,7 @@ function ImageCard(props) {
                     );
                   }}
                 >
-                  <Icon name="trash" style={{ color: ((route.params?.screen === 'Vorlagen') ? 'gray' : 'balck'), fontSize: 40, marginTop: 20, marginLeft: 5, marginRight: 0 }} />
+                  <Icon name="trash" style={{ color: ((route.params?.originScreen === 'Vorlagen') ? 'gray' : 'balck'), fontSize: 40, marginTop: 20, marginLeft: 5, marginRight: 0 }} />
                 </TouchableOpacity>
               </Button>
             </Row>

@@ -65,9 +65,9 @@ function Home({ navigation, route }) {
                 navigation={navigation}
                 route={route}
                 eSign={eSign}
-                name={eSign.name}
-                images={[{ path: `${RNFS.PicturesDirectoryPath}/Zelda/zelda.jpg`, pos: 0 }, { path: `${PATHS.IMAGES}/moby.jpg`, pos: 1 }]} // blup
-                // images={eSign.images}
+                originScreen="Home"
+                //name={eSign.name}
+                //images={[{ path: `${RNFS.PicturesDirectoryPath}/Zelda/zelda.jpg`, pos: 0 }, { path: `${PATHS.IMAGES}/moby.jpg`, pos: 1 }]} // blup
               />
             ))
           }

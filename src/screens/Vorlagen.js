@@ -24,7 +24,27 @@ function Vorlagen({ navigation, route }) {
 
   // const eSigns = LocalStorage.getObject('eSigns');
   // console.log('eSigns: ', eSigns.name);
-  
+
+  const eSign1 = {
+    name: 'E-Sign Vorlage #1',
+    images: [{ path: '/images/moby.jpg', byteArray: imageDataMoby, pos: 0 }],
+  };
+  const eSign2 = {
+    name: 'E-Sign Vorlage #2',
+    images: [
+      { path: '/images/ninja.jpg', byteArray: imageDataNinja, pos: 0 },
+      { path: '/images/moby.jpg', byteArray: imageDataMoby, pos: 1 }
+    ],
+  };
+  const eSign3 = {
+    name: 'E-Sign Vorlage #3',
+    images: [
+      { path: '/images/baby.jpg', pos: 0 },
+      { path: '/images/ninja.jpg', byteArray: imageDataNinja, pos: 1 },
+      { path: '/images/moby.jpg', byteArray: imageDataMoby, pos: 2 }
+    ],
+  };
+
   return (
     <Container>
       <Content>
@@ -32,26 +52,20 @@ function Vorlagen({ navigation, route }) {
           <ESignCard
             navigation={navigation}
             route={route}
-            name="E-Sign Vorlage #1"
-            // images={[babyJpgSrc]}
-            images={[{ path: '/images/moby.jpg', byteArray: imageDataMoby, pos: 0 }]}
-            screen="Vorlagen"
+            eSign={eSign1}
+            originScreen="Vorlagen"
           />
           <ESignCard
             navigation={navigation}
             route={route}
-            name="E-Sign Vorlage #2"
-            // images={[mobyJpgSrc, babyJpgSrc]}
-            images={[{ path: '/images/ninja.jpg', byteArray: imageDataNinja, pos: 0 }, { path: '/images/moby.jpg', byteArray: imageDataMoby, pos: 1 }]}
-            screen="Vorlagen"
+            eSign={eSign2}
+            originScreen="Vorlagen"
           />
           <ESignCard
             navigation={navigation}
             route={route}
-            name="E-Sign Vorlage #3"
-            // images={[mobyJpgSrc, babyJpgSrc, ninjaJpgSrc]}
-            images={[{ path: '/images/baby.jpg', pos: 0 }, { path: '/images/ninja.jpg', byteArray: imageDataNinja, pos: 1 }, { path: '/images/moby.jpg', byteArray: imageDataMoby, pos: 2 }]}
-            screen="Vorlagen"
+            eSign={eSign3}
+            originScreen="Vorlagen"
           />
         </View>
 

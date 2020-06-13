@@ -68,6 +68,38 @@ Reloading node_modules might help too
 ### Design
 ![Rough design](https://github.com/Yoshi20/nfc_epd_app/blob/master/docs/Rough_design.pdf "Rough design")
 
+### Screens
+#### Home
+The Home screen lists a variable number of ESignCards. The number of ESignCards can be changed by an user.
+#### Vorlagen
+The Vorlagen screen lists a static number of ESignCards. The number of ESignCards can not be changed by an user.
+#### ESign
+The ESign screen lists a variable number of ImageCards. The number of ImageCards can be changed by an user.
+#### Image
+...
+
+### Components
+#### ESignCard
+The ESignCard consists of a name and can have multiple images. A click on an ESignCard navigates to the ESign screen.
+- navigation
+- route
+- eSign
+- originScreen
+#### ImageCard
+The ImageCard consists of a single image and some action icons. A click on the edit action icon navigates to the Image screen.
+- navigation
+- route
+- image
+- originScreen
+
+### Objects
+#### ESign
+- name
+- images
+#### Image
+- pos
+- path
+
 ## Links
 - https://www.waveshare.com/product/displays/e-paper/epaper-1/7.5inch-e-paper.htm
 - http://www.marvinj.org/en/index.html

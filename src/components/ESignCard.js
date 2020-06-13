@@ -8,13 +8,12 @@ import RNFS from 'react-native-fs';
 
 import { PATHS } from '../constants';
 
-function ESignCard({ navigation, route, eSign, name, images, screen }) {
-
+function ESignCard({ navigation, route, eSign, originScreen }) {
   return (
     <Card style={{ width: '48%' }}>
       <TouchableOpacity
         onPress={() => {
-          navigation.navigate('ESign', { navigation, route, eSign, name, images, screen });
+          navigation.navigate('ESign', { navigation, route, eSign, originScreen });
         }}
       >
         <CardItem cardBody style={{ padding: 5, paddingBottom: 5 }}>
@@ -26,14 +25,14 @@ function ESignCard({ navigation, route, eSign, name, images, screen }) {
             </Row>
 
             {/* blup: */}
-            {/* <Text>{images.length}</Text>
+            {/* <Text>{eSign.images.length}</Text>
             <Text>{'paths:'}</Text>
-            {images.map(image => (
-              <Text>{Platform.OS === 'ios' ? image.path : `${screen === 'Vorlagen' ? 'asset:/' : 'file:/'}${image.path}` }</Text>
+            {eSign.images.map(image => (
+              <Text>{Platform.OS === 'ios' ? image.path : `${originScreen === 'Vorlagen' ? 'asset:/' : 'file:/'}${image.path}` }</Text>
             ))} */}
 
             <Row size={80}>
-              {(images.length === 0)
+              {(eSign.images.length === 0)
                 && (
                   // <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                   //   <Icon name="laptop" style={{ height: 100, paddingTop: 35 }} />
@@ -43,12 +42,12 @@ function ESignCard({ navigation, route, eSign, name, images, screen }) {
                     style={{ height: 100, width: '100%' }}
                   />
                 )}
-              {(images.length > 0)
+              {(eSign.images.length > 0)
                 && (
-                  images.map(image => (
+                  eSign.images.map(image => (
                     <Image
-                      source={{ uri: Platform.OS === 'ios' ? image.path : `${screen === 'Vorlagen' ? 'asset://' : 'file://'}${image.path}` }}
-                      style={{ height: 100, width: `${100 / images.length}%` }}
+                      source={{ uri: Platform.OS === 'ios' ? image.path : `${originScreen === 'Vorlagen' ? 'asset://' : 'file://'}${image.path}` }}
+                      style={{ height: 100, width: `${100 / eSign.images.length}%` }}
                     />
                   ))
                 )}

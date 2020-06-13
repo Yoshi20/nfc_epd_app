@@ -6,6 +6,9 @@ import AsyncStorage from '@react-native-community/async-storage';
 import ESignCard from '../components/ESignCard';
 import Logger from '../services';
 
+import RNFS from 'react-native-fs';
+import { PATHS } from '../constants';
+
 function Home({ navigation, route }) {
   const [eSignsArray, setESignsArray] = useState([]);
 
@@ -59,7 +62,7 @@ function Home({ navigation, route }) {
                 navigation={navigation}
                 route={route}
                 name={eSign.name}
-                images={[{ path: 'asdf' }, { path: 'qwer' }]} //blup
+                images={[{ path: `${RNFS.PicturesDirectoryPath}/Zelda/zelda.jpg` }, { path: `${PATHS.IMAGES}/moby.jpg` }]} // blup
                 // images={eSign.images}
               />
             ))

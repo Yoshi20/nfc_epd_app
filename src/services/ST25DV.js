@@ -13,7 +13,8 @@ function hexToBytes(hex) {
 }
 
 class ST25DV {
-  init = () => {
+  // init = () => {
+  static init() {
     NfcManager.start({
       onSessionClosedIOS: () => {
         console.log('ios session closed');
@@ -23,47 +24,56 @@ class ST25DV {
       .catch(err => console.warn(err));
   }
 
-  cancel = () => {
+  // cancel = () => {
+  static cancel() {
     NfcManager.unregisterTagEvent().catch(() => 0);
   }
 
-  cleanUpTransceive = () => {
+  // cleanUpTransceive = () => {
+  static cleanUpTransceive() {
     NfcManager.cancelTechnologyRequest().catch(() => 0);
   }
 
-  requestTechnology = async () => {
+  // requestTechnology = async () => {
+  static async requestTechnology() {
     const tech = NfcTech.NfcV; // Platform.OS === 'ios' ? NfcTech.MifareIOS : NfcTech.NfcV;
     return await NfcManager.requestTechnology(tech);
   }
 
-  sendDefaultPw = async () => {
+  // sendDefaultPw = async () => {
+  static async sendDefaultPw() {
     const resetPassword = [0x02, 0xB3, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00];
     return await NfcManager.transceive(resetPassword);
   }
 
-  setEHMode = async (mode) => {
+  // setEHMode = async (mode) => {
+  static async setEHMode(mode) {
     if (mode > 1) mode = 1;
     const bytes = [0x02, 0xA1, 0x02, 0x02, mode]; // 1=onDemandOnly; 0=EhForcedAfterBoot
     return await NfcManager.transceive(bytes);
   }
 
-  getEHMode = async () => {
+  // getEHMode = async () => {
+  static async getEHMode() {
     const bytes = [0x02, 0xA0, 0x02, 0x02];
     return await NfcManager.transceive(bytes);
   }
 
-  enableEnergyHarvesting = async (enable) => {
+  // enableEnergyHarvesting = async (enable) => {
+  static async enableEnergyHarvesting(enable) {
     if (enable > 1) enable = 1;
     const bytes = [0x02, 0xAE, 0x02, 0x02, enable]; // 1=enable; 0=disable
     return await NfcManager.transceive(bytes);
   }
 
-  configureGPO = async (conf) => {
+  // configureGPO = async (conf) => {
+  static async configureGPO(conf) {
     const configGPO = [0x02, 0xA1, 0x02, 0x00, conf];
     return await NfcManager.transceive(configGPO);
   }
 
-  setGPOLevel = async (level) => {
+  // setGPOLevel = async (level) => {
+  static async setGPOLevel(level) {
     const resp = this.configureGPO(0x81); // GPO_EN & RF_USER_EN
     if (resp[0] != 0) console.warn('configGPO failed! Resp: ', resp);
     if (level > 1) level = 1;
@@ -71,61 +81,71 @@ class ST25DV {
     return await NfcManager.transceive(bytes);
   }
 
-  writeSystemRegister = async (addr, byte) => { // addr = '00'... '0F'
+  // writeSystemRegister = async (addr, byte) => { // addr = '00'... '0F'
+  async writeSystemRegister(addr, byte) { // addr = '00'... '0F'
     let bytes = [0x02, 0xA1, 0x02]; // ST25DV_REQUEST_HEADER, WRITE_COMMAND
     bytes = bytes.concat(hexToBytes(addr), [byte]);
     return await NfcManager.transceive(bytes);
   }
 
-  readSystemRegister = async (addr) => { // addr = '00'... '0F'
+  // readSystemRegister = async (addr) => { // addr = '00'... '0F'
+  async readSystemRegister(addr) { // addr = '00'... '0F'
     let bytes = [0x02, 0xA0, 0x02]; // ST25DV_REQUEST_HEADER, READ_COMMAND
     bytes = bytes.concat(hexToBytes(addr));
     return await NfcManager.transceive(bytes);
   }
 
-  writeDynamicRegister = async (addr, byte) => { // addr: '00' = GPO_CTRL_Dyn, '02' = EH_CTRL_Dyn, '0D' = MB_CTRL_Dyn
+  // writeDynamicRegister = async (addr, byte) => { // addr: '00' = GPO_CTRL_Dyn, '02' = EH_CTRL_Dyn, '0D' = MB_CTRL_Dyn
+  async writeDynamicRegister(addr, byte) { // addr: '00' = GPO_CTRL_Dyn, '02' = EH_CTRL_Dyn, '0D' = MB_CTRL_Dyn
     let bytes = [0x02, 0xAE, 0x02];
     bytes = bytes.concat(hexToBytes(addr), [byte]);
     return await NfcManager.transceive(bytes);
   }
 
-  readDynamicRegister = async (addr) => { // addr: '00' = GPO_CTRL_Dyn, '02' = EH_CTRL_Dyn, '0D' = MB_CTRL_Dyn
+  // readDynamicRegister = async (addr) => { // addr: '00' = GPO_CTRL_Dyn, '02' = EH_CTRL_Dyn, '0D' = MB_CTRL_Dyn
+  static async readDynamicRegister(addr) { // addr: '00' = GPO_CTRL_Dyn, '02' = EH_CTRL_Dyn, '0D' = MB_CTRL_Dyn
     let bytes = [0x02, 0xAD, 0x02];
     bytes = bytes.concat(hexToBytes(addr));
     return await NfcManager.transceive(bytes);
   }
 
-  writeMemory = async (addr, byteArray) => { // addr: '0000'... '007F'
+  // writeMemory = async (addr, byteArray) => { // addr: '0000'... '007F'
+  static async writeMemory(addr, byteArray) { // addr: '0000'... '007F'
     let bytes = [0x02, 0x31]; // ST25DV_REQUEST_HEADER, WRITE_COMMAND
     if (byteArray.length > 4) byteArray = byteArray.slice(0, 4);
     bytes = bytes.concat(hexToBytes(addr), byteArray);
     return await NfcManager.transceive(bytes);
   }
 
-  readMemory = async (addr) => { // addr: '0000'... '007F'
+  // readMemory = async (addr) => { // addr: '0000'... '007F'
+  static async readMemory(addr) { // addr: '0000'... '007F'
     let bytes = [0x02, 0x30]; // ST25DV_REQUEST_HEADER, READ_COMMAND
     bytes = bytes.concat(hexToBytes(addr));
     return await NfcManager.transceive(bytes);
   }
 
-  writeMailboxMessage = async (byteArray) => {
+  // writeMailboxMessage = async (byteArray) => {
+  static async writeMailboxMessage(byteArray) {
     // if (byteArray.length > 256) byteArray = byteArray.slice(0, 256);
     let bytes = [0x02, 0xAA, 0x02, byteArray.length - 1];
     bytes = bytes.concat(byteArray);
     return await NfcManager.transceive(bytes);
   }
 
-  readMailboxMessage = async () => {
+  // readMailboxMessage = async () => {
+  static async readMailboxMessage() {
     const bytes = [0x02, 0xAC, 0x02, 0x00, 0x00];
     return await NfcManager.transceive(bytes);
   }
 
-  readMailboxMessageLength = async () => {
+  // readMailboxMessageLength = async () => {
+  static async readMailboxMessageLength() {
     const bytes = [0x02, 0xAB, 0x02];
     return await NfcManager.transceive(bytes);
   }
 
-  registerTransceive = async (cmd, addr, value) => {
+  // registerTransceive = async (cmd, addr, value) => {
+  static async registerTransceive(cmd, addr, value) {
     if (cmd === 0) {
       console.warn('missing cmd!');
     } else if (addr === 0) {
@@ -172,7 +192,8 @@ class ST25DV {
 
   // ----------------------------------------------------
 
-  _cancel = async () => {
+  // _cancel = async () => {
+  static async _cancel() {
     Vibration.vibrate();
     try {
       this.cancel();
@@ -185,7 +206,8 @@ class ST25DV {
     // this.setState({progress: 0});
   }
 
-  uploadImage = async (image, startedCallback, successCallback, errorCallback) => {
+  // uploadImage = async (image, startedCallback, successCallback, errorCallback) => {
+  static async uploadImage(image, startedCallback, successCallback, errorCallback) {
     // this.setState({running: true});
 
     let resp;
@@ -224,16 +246,17 @@ class ST25DV {
       resp = await this.configureGPO(0x90); // GPO_EN & RF_PUT_MSG
       if (resp[0] != 0) console.warn('configureGPO failed! Resp: ', resp);
 
-      console.log('set MB_WDG');
-      resp = await this.writeSystemRegister('0E', 0); // MB_WDG
-      if (resp[0] != 0) console.warn('disable MB_WDG failed! Resp: ', resp);
+      //blup: always failing for some reason atm.
+      // console.log('set MB_WDG');
+      // resp = await this.writeSystemRegister('0E', 0); // MB_WDG
+      // if (resp[0] != 0) console.warn('disable MB_WDG failed! Resp: ', resp);
 
-      console.log('waiting for MB_EN...');
-      do {
-        resp = await this.readDynamicRegister('0D'); // 0D' = MB_CTRL_Dyn
-        console.log('MB_CTRL_Dyn: ', resp);
-      } while (!(resp[0] == 0 && (resp[1] & (1 << 0)))); // MB_EN
-      console.log('MB_EN detected');
+      // console.log('waiting for MB_EN...');
+      // do {
+      //   resp = await this.readDynamicRegister('0D'); // 0D' = MB_CTRL_Dyn
+      //   console.log('MB_CTRL_Dyn: ', resp);
+      // } while (!(resp[0] == 0 && (resp[1] & (1 << 0)))); // MB_EN
+      // console.log('MB_EN detected');
 
       resp = await this.readMailboxMessageLength(); // 0 means 1 byte
       console.log('msgLen resp: ', resp);

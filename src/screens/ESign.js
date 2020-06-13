@@ -10,8 +10,8 @@ import image5Raw from '../assets/images/testRaw/image5';
 const ninjaJpgSrc = require('../assets/images/testJpg/ninja.jpg');
 const mobyJpgSrc = require('../assets/images/testJpg/moby.jpg');
 
-function ESign({ navigation, route }) { // route.params: name, images
-  const [name, setName] = useState(route.params?.name);
+function ESign({ navigation, route }) { // route.params: name, images, screen
+  // const [name, setName] = useState(route.params?.name);
   const [imagesArray, setImagesArray] = useState(route.params?.images);
   const [uploadActivated, setUploadActivated] = useState(false);
 
@@ -34,11 +34,37 @@ function ESign({ navigation, route }) { // route.params: name, images
       // ),
       headerRight: () => (
         <Grid style={{ marginTop: 5 }}>
-          <Col style={{ marginRight: 30 }}>
+          {route.params?.screen !== 'Vorlagen'
+            && (
+              <Col style={{ marginRight: 20 }}>
+                <TouchableOpacity onPress={() => {
+                  Alert.alert(
+                    'E-Signe wirklich löschen?',
+                    'Alle Bilder dieses E-Singes werden gelöscht. Dieser Schritt kann nicht rückgängig gemacht werden.',
+                    [
+                      {
+                        text: 'Nein',
+                        onPress: () => console.log('Cancel Pressed'),
+                        style: 'cancel'
+                      },
+                      {
+                        text: 'Ja',
+                        onPress: () => console.log('OK Pressed')
+                      }
+                    ],
+                    { cancelable: true }
+                  );
+                }}
+                >
+                  <Icon name="trash" style={{ color: 'white', fontSize: 40 }} />
+                </TouchableOpacity>
+              </Col>
+            )}
+          <Col style={{ marginRight: 10 }}>
             <TouchableOpacity onPress={() => {
               Alert.alert(
-                'E-Signe wirklich löschen?',
-                'Dieser Schritt kann nicht rückgängig gemacht werden.',
+                'Alle Bilder aufs E-Signe laden?',
+                'Schalte die NFC Funktion ein und lege dein Handy auf die Mitte des E-Signes.',
                 [
                   {
                     text: 'Nein',
@@ -54,12 +80,7 @@ function ESign({ navigation, route }) { // route.params: name, images
               );
             }}
             >
-              <Icon name="trash" style={{ color: 'white', fontSize: 40 }} />
-            </TouchableOpacity>
-          </Col>
-          <Col style={{ marginRight: 20 }}>
-            <TouchableOpacity onPress={() => Alert.alert('Alert', 'Touched')}>
-              <Icon name="paper-plane" style={{ color: 'white', fontSize: 40 }} />
+              <Icon type="MaterialCommunityIcons" name="nfc" style={{ color: 'white', fontSize: 40 }} />
             </TouchableOpacity>
           </Col>
         </Grid>
@@ -124,63 +145,49 @@ function ESign({ navigation, route }) { // route.params: name, images
           <Text>Toast test</Text>
         </Button> */}
 
-        {/* <ImageCard
-          isImageUploadAllowed={!uploadActivated}
-          uploadActivatedCallback={uploadActivatedCallback}
-          uploadFinishedCallback={uploadFinishedCallback}
-          imagePath={mobyJpgSrc}
-          imageData={image5Raw}
-          navigation={navigation}
-          route={route}
-
-        />
-        <ImageCard
-          isImageUploadAllowed={!uploadActivated}
-          uploadActivatedCallback={uploadActivatedCallback}
-          uploadFinishedCallback={uploadFinishedCallback}
-          imagePath={ninjaJpgSrc}
-          imageData={image1Raw}
-          navigation={navigation}
-          route={route}
-        /> */}
-
         <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
           {
             imagesArray.map(image => (
               <ImageCard
                 navigation={navigation}
                 route={route}
-                path={image.path}
+                image={image}
+                screen={route.params?.screen}
                 isImageUploadAllowed={!uploadActivated}
                 uploadActivatedCallback={uploadActivatedCallback}
                 uploadFinishedCallback={uploadFinishedCallback}
-                // imagePath={ninjaJpgSrc}
-                imageData={image1Raw}
+                // imageData={image1Raw}
+                imageData={image.byteArray}
               />
             ))
           }
         </View>
 
-        <Button block transparent>
-          <TouchableOpacity
-            onPress={() => {
-              // navigation.navigate('AddImage', {});
-              addImage();
-            }}
-          >
-            <Icon name="add-circle" style={{ color: 'orange', fontSize: 40 }} />
-          </TouchableOpacity>
-        </Button>
-
-        <Button block transparent>
-          <TouchableOpacity
-            onPress={() => {
-              deleteImage();
-            }}
-          >
-            <Icon name="remove-circle" style={{ color: 'red', fontSize: 40 }} />
-          </TouchableOpacity>
-        </Button>
+        {route.params?.screen !== 'Vorlagen'
+          && (
+            <Button block transparent>
+              <TouchableOpacity
+                onPress={() => {
+                  // navigation.navigate('AddImage', {});
+                  addImage();
+                }}
+              >
+                <Icon name="add-circle" style={{ color: 'orange', fontSize: 40 }} />
+              </TouchableOpacity>
+            </Button>
+          )}
+        {route.params?.screen !== 'Vorlagen'
+          && (
+            <Button block transparent>
+              <TouchableOpacity
+                onPress={() => {
+                  deleteImage();
+                }}
+              >
+                <Icon name="remove-circle" style={{ color: 'red', fontSize: 40 }} />
+              </TouchableOpacity>
+            </Button>
+          )}
 
       </Content>
     </Container>

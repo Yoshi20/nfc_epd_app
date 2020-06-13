@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 import React, { useState } from 'react';
-import { Alert, Image, TouchableOpacity } from 'react-native';
-import { Button, Icon, Toast, Card, CardItem } from 'native-base';
+import { Platform, Alert, Image, TouchableOpacity } from 'react-native';
+import { Text, Button, Icon, Toast, Card, CardItem } from 'native-base';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import { UIActivityIndicator } from 'react-native-indicators';
 import ImageLoad from 'react-native-image-placeholder';
@@ -14,11 +14,13 @@ function ImageCard(props) {
 
   const {
     navigation,
-    uploadFinishedCallback,
-    imagePath,
+    route,
+    image,
+    screen,
     isImageUploadAllowed,
     uploadActivatedCallback,
-    imageData,
+    uploadFinishedCallback,
+    imageData
   } = props;
 
   function uploadStarted() {
@@ -54,9 +56,9 @@ function ImageCard(props) {
         <Grid>
           <Col size={90}>
             <ImageLoad
-                style={{ width: '100%', height: 200 }}
-                source={{ uri: Platform.OS === 'ios' ? imagePath : `file://${imagePath}` }}
-              />
+              style={{ width: '100%', height: 200 }}
+              source={{ uri: Platform.OS === 'ios' ? image.path : `${screen === 'Vorlagen' ? 'asset://' : 'file://'}${image.path}` }}
+            />
             {uploadingStarted && <UIActivityIndicator style={{ position: 'absolute', top: '39%', left: '43%' }} color="orange" />}
             {/* {uploadingStarted && <PacmanIndicator style={{position: 'absolute', top: '37%', left: '40%'}} color='orange'></PacmanIndicator>} */}
             {/* {uploadingStarted && <BallIndicator style={{position: 'absolute', top: '37%', left: '40%'}} color='orange'></BallIndicator>} */}
@@ -64,10 +66,41 @@ function ImageCard(props) {
             {/* {uploadingStarted && <SkypeIndicator style={{position: 'absolute', top: '37%', left: '40%'}} color='orange'></SkypeIndicator>} */}
             {/* {uploadingStarted && <MaterialIndicator style={{position: 'absolute', top: '37%', left: '40%'}} color='orange'></MaterialIndicator>} */}
 
+            {/* blup: */}
+            {/* <Text>{Platform.OS === 'ios' ? image.path : `${screen === 'Vorlagen' ? 'asset://' : 'file://'}${image.path}` }</Text> */}
+
           </Col>
           <Col size={10} style={{ paddingLeft: 5 }}>
             <Row>
               <Button transparent>
+
+
+                {/* <TouchableOpacity onPress={() => {
+                  Alert.alert(
+                    'Bild aufs E-Signe laden?',
+                    'Schalte die NFC Funktion ein und lege dein Handy auf die Mitte des E-Signes.',
+                    [
+                      {
+                        text: 'Nein',
+                        style: 'cancel'
+                      },
+                      {
+                        text: 'Ja',
+                        onPress: () => {
+                          uploadActivatedCallback();
+                          ST25DV.uploadImage(imageData, uploadStarted, uploadOk, uploadFailed);
+                          setUploading(true);
+                          Toast.show({ text: 'Bild kann nun via NFC aufs Display geladen werden', duration: 3000 });
+                        }
+                      }
+                    ],
+                    { cancelable: true }
+                  );
+                }}
+                >
+                  <Icon type="MaterialCommunityIcons" name="nfc" style={{ color: isImageUploadAllowed ? 'black' : 'grey', fontSize: 40, marginTop: 20, marginLeft: -3, marginRight: 0 }} />
+                </TouchableOpacity> */}
+
                 {!uploading
                   && (
                   <TouchableOpacity
@@ -79,7 +112,8 @@ function ImageCard(props) {
                       Toast.show({ text: 'Bild kann nun via NFC aufs Display geladen werden', duration: 3000 });
                     }}
                   >
-                    <Icon name="paper-plane" style={{ color: isImageUploadAllowed ? 'black' : 'grey', fontSize: 40, marginTop: 20, marginLeft: 0, marginRight: 0 }} />
+                    <Icon type="MaterialCommunityIcons" name="nfc" style={{ color: isImageUploadAllowed ? 'black' : 'grey', fontSize: 40, marginTop: 20, marginLeft: -3, marginRight: 0 }} />
+                    {/* <Icon name="paper-plane" style={{ color: isImageUploadAllowed ? 'black' : 'grey', fontSize: 40, marginTop: 20, marginLeft: 0, marginRight: 0 }} /> */}
                     {/* <Icon name="paw" style={{color: "black", fontSize: 40, marginTop: 20, marginLeft: 1, marginRight: 0}} /> */}
                     {/* <Icon name="color-wand" style={{color: "black", fontSize: 40, marginTop: 20, marginLeft: 2, marginRight: 0}} /> */}
                     {/* <Icon name="wifi" style={{color: "black", fontSize: 40, marginTop: 20, marginLeft: 1, marginRight: 0}} /> */}
@@ -101,44 +135,57 @@ function ImageCard(props) {
                     <Icon name="close-circle" style={{ color: 'black', fontSize: 40, marginTop: 20, marginLeft: 1, marginRight: 0 }} />
                   </TouchableOpacity>
                   )}
+
               </Button>
             </Row>
+
+            <Row>
+              <Button transparent disabled>
+                <TouchableOpacity
+                  disabled={route.params?.screen === 'Vorlagen'}
+                  onPress={() => {
+                    navigation.navigate('EditImage', { image });
+                  }}
+                >
+                  <Icon name="create" style={{ color: ((route.params?.screen === 'Vorlagen') ? 'gray' : 'balck'), fontSize: 40, marginTop: 20, marginLeft: 3, marginRight: 0 }} />
+                </TouchableOpacity>
+              </Button>
+            </Row>
+
             <Row>
               <Button transparent>
                 <TouchableOpacity
+                  disabled={route.params?.screen === 'Vorlagen'}
                   onPress={() => {
-                    navigation.navigate('EditImage', { imagePath });
+                    Alert.alert(
+                      'Bild wirklich löschen?',
+                      'Dieser Schritt kann nicht rückgängig gemacht werden.',
+                      [
+                        {
+                          text: 'Nein',
+                          onPress: () => console.log('Cancel Pressed'),
+                          style: 'cancel'
+                        },
+                        {
+                          text: 'Ja',
+                          onPress: () => {
+                            console.log('OK Pressed');
+                            const index = 0; // blup
+                            const newImagesArray = route.params.images;
+                            newImagesArray.splice(index, 1); // this removes image at given position
+                            navigation.setParams({ images: newImagesArray });
+                          }
+                        }
+                      ],
+                      { cancelable: true }
+                    );
                   }}
                 >
-                  <Icon name="create" style={{ color: 'black', fontSize: 40, marginTop: 20, marginLeft: 3, marginRight: 0 }} />
+                  <Icon name="trash" style={{ color: ((route.params?.screen === 'Vorlagen') ? 'gray' : 'balck'), fontSize: 40, marginTop: 20, marginLeft: 5, marginRight: 0 }} />
                 </TouchableOpacity>
               </Button>
             </Row>
-            <Row>
-              <Button transparent>
-                <TouchableOpacity onPress={() => {
-                  Alert.alert(
-                    'Bild wirklich löschen?',
-                    'Dieser Schritt kann nicht rückgängig gemacht werden.',
-                    [
-                      {
-                        text: 'Nein',
-                        onPress: () => console.log('Cancel Pressed'),
-                        style: 'cancel'
-                      },
-                      {
-                        text: 'Ja',
-                        onPress: () => console.log('OK Pressed')
-                      }
-                    ],
-                    { cancelable: true }
-                  );
-                }}
-                >
-                  <Icon name="trash" style={{ color: 'black', fontSize: 40, marginTop: 20, marginLeft: 5, marginRight: 0 }} />
-                </TouchableOpacity>
-              </Button>
-            </Row>
+
           </Col>
         </Grid>
       </CardItem>

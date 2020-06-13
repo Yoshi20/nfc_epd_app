@@ -10,6 +10,9 @@ const babyJpgSrc = require('../assets/images/testJpg/baby.jpg');
 const mobyJpgSrc = require('../assets/images/testJpg/moby.jpg');
 const ninjaJpgSrc = require('../assets/images/testJpg/ninja.jpg');
 
+import imageDataNinja from '../assets/images/testRaw/image1';
+import imageDataMoby from '../assets/images/testRaw/image5';
+
 function Vorlagen({ navigation, route }) {
   const [eSigns, setESigns] = useState([]);
 
@@ -30,19 +33,25 @@ function Vorlagen({ navigation, route }) {
             navigation={navigation}
             route={route}
             name="E-Sign Vorlage #1"
-            images={[babyJpgSrc]}
+            // images={[babyJpgSrc]}
+            images={[{ path: '/images/moby.jpg', byteArray: imageDataMoby }]}
+            screen="Vorlagen"
           />
           <ESignCard
             navigation={navigation}
             route={route}
             name="E-Sign Vorlage #2"
-            images={[mobyJpgSrc, babyJpgSrc]}
+            // images={[mobyJpgSrc, babyJpgSrc]}
+            images={[{ path: '/images/ninja.jpg', byteArray: imageDataNinja }, { path: '/images/moby.jpg', byteArray: imageDataMoby }]}
+            screen="Vorlagen"
           />
           <ESignCard
             navigation={navigation}
             route={route}
             name="E-Sign Vorlage #3"
-            images={[mobyJpgSrc, babyJpgSrc, ninjaJpgSrc]}
+            // images={[mobyJpgSrc, babyJpgSrc, ninjaJpgSrc]}
+            images={[{ path: '/images/baby.jpg' }, { path: '/images/ninja.jpg', byteArray: imageDataNinja }, { path: '/images/moby.jpg', byteArray: imageDataMoby }]}
+            screen="Vorlagen"
           />
         </View>
 

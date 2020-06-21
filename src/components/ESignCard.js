@@ -11,7 +11,6 @@ import { PATHS } from '../constants';
 function ESignCard(props) {
   const {
     navigation,
-    route,
     eSign,
     originScreen
   } = props;
@@ -19,7 +18,7 @@ function ESignCard(props) {
     <Card style={{ width: '48%' }}>
       <TouchableOpacity
         onPress={() => {
-          navigation.navigate('ESign', { navigation, route, eSign, originScreen });
+          navigation.navigate('ESign', { eSign, originScreen });
         }}
       >
         <CardItem cardBody style={{ padding: 5, paddingBottom: 5 }}>

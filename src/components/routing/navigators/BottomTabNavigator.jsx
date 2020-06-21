@@ -18,15 +18,15 @@ const BottomTabNavigator = () => {
   return (
     <Tab.Navigator tabBar={props => <NavigationFooter {...props} />}>
       <Tab.Screen
-        name="Home"
+        name="HomeTab"
         component={withStackNavigator('Home', 'Meine E-Signs', Home)}
       />
       <Tab.Screen
-        name="Vorlagen"
+        name="VorlagenTab"
         component={withStackNavigator('Vorlagen', 'E-Signs Vorlagen', Vorlagen)}
       />
       <Tab.Screen
-        name="Settings"
+        name="SettingsTab"
         component={withStackNavigator('Settings', 'Einstellungen', Settings, {
           headerRight: () => (
             <TouchableOpacity onPress={() => Alert.alert('Alert', 'Touched')}>

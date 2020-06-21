@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container, Content, Text } from 'native-base';
 
-function Settings() {
+function Settings({ navigation, route }) {
   return (
     <Container>
       <Content>

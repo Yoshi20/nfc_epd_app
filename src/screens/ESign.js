@@ -17,13 +17,14 @@ function ESign({ navigation, route }) { // route.params: eSign, originScreen
   const [imagesArray, setImagesArray] = useState(route.params?.eSign.images);
   const [uploadActivated, setUploadActivated] = useState(false);
 
-  useEffect(() => {
-    if (route.params?.post) {
-      console.warn(JSON.stringify(route.params.post)); // blup
-      // Post updated, do something with `route.params.post`
-      // For example, send the post to the server
-    }
-  }, [route.params?.post]);
+  // useEffect(() => {
+  //   // console.warn(JSON.stringify(route.params)); // blup
+  //   if (route.params?.post) {
+  //     console.warn(JSON.stringify(route.params.post)); // blup
+  //     // Post updated, do something with `route.params.post`
+  //     // For example, send the post to the server
+  //   }
+  // }, [route.params?.post]);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -47,12 +48,13 @@ function ESign({ navigation, route }) { // route.params: eSign, originScreen
                     [
                       {
                         text: 'Nein',
-                        onPress: () => console.log('Cancel Pressed'),
                         style: 'cancel'
                       },
                       {
                         text: 'Ja',
-                        onPress: () => console.log('OK Pressed')
+                        onPress: () => {
+                          navigation.navigate(route.params.originScreen, { deleteESignId: route.params?.eSign.id });
+                        }
                       }
                     ],
                     { cancelable: true }
@@ -175,6 +177,7 @@ function ESign({ navigation, route }) { // route.params: eSign, originScreen
                 route={route}
                 image={image}
                 originScreen={route.params?.originScreen}
+                updateESignsArray={updateESignsArray}
                 isImageUploadAllowed={!uploadActivated}
                 uploadActivatedCallback={uploadActivatedCallback}
                 uploadFinishedCallback={uploadFinishedCallback}

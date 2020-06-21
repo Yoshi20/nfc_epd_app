@@ -51,19 +51,16 @@ function Vorlagen({ navigation, route }) {
         <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
           <ESignCard
             navigation={navigation}
-            route={route}
             eSign={eSign1}
             originScreen="Vorlagen"
           />
           <ESignCard
             navigation={navigation}
-            route={route}
             eSign={eSign2}
             originScreen="Vorlagen"
           />
           <ESignCard
             navigation={navigation}
-            route={route}
             eSign={eSign3}
             originScreen="Vorlagen"
           />

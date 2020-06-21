@@ -13,12 +13,14 @@ function Home({ navigation, route }) {
   const [eSignsArray, setESignsArray] = useState([]);
 
   useEffect(() => {
-    if (route.params?.post) {
-      console.warn(JSON.stringify(route.params.post)); // blup
-      // Post updated, do something with `route.params.post`
-      // For example, send the post to the server
+    if (route.params?.deleteESignId) {
+      console.warn('deleteESignId = ', JSON.stringify(route.params.deleteESignId)); // blup
+      // console.warn('eSignsArray = ', JSON.stringify(eSignsArray)); // blup
+      // let eSignsArray = getESignsArray();
+      // console.warn('eSignsArray = ', JSON.stringify(eSignsArray)); // blup
+      // deleteESign(route.params.deleteESignId);
     }
-  }, [route.params?.post]);
+  }, [route.params?.deleteESignId]);
 
   const getESignsArray = async () => {
     try {
@@ -50,26 +52,39 @@ function Home({ navigation, route }) {
     }
   };
 
-  const deleteESign = async () => {
+  const deleteESign = async (id) => {
     try {
       const newESignsArray = eSignsArray.slice(); // copy the state array
-      newESignsArray.pop();
+      if (id) {
+        // find index of the eSign to delete
+        const currentESignIndex = newESignsArray.findIndex((eS) => {
+          return eS.id === id;
+        });
+        newESignsArray.splice(currentESignIndex, 1); // this removes one eSign at given position
+      } else {
+        newESignsArray.pop();
+      }
       saveESignsArray(newESignsArray);
     } catch (e) {
       Logger.error('deleteESign failed! Error:', e);
     }
   };
 
-  if (eSignsArray.length === 0) {
-    getESignsArray();
-  }
-
-  // update the eSignsArray also regularly to recognice if an image was added or removed
-  setTimeout(() => {
-    if (eSignsArray.length > 0) {
+  const initScreen = async () => {
+    // console.warn('eSignsArray = ', JSON.stringify(eSignsArray)); // blup
+    // get the eSignsArray when it's empty
+    if (eSignsArray.length === 0) {
       getESignsArray();
     }
-  }, 2000);
+    // update the eSignsArray also regularly to recognice if an image was added or removed
+    setTimeout(() => {
+      if (eSignsArray.length > 0) {
+        getESignsArray();
+      }
+    }, 2000);
+  };
+
+  initScreen();
 
   return (
     <Container>

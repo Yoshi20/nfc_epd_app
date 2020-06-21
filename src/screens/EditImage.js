@@ -23,7 +23,8 @@ function EditImage({ navigation, route }) { // route.params: title, image
     RNFS.mkdir(PATHS.IMAGES, { NSURLIsExcludedFromBackupKey: true });
 
     /* Copy cropped image into the images dir */
-    const newImageFilePath = `${PATHS.IMAGES}/${new Date().toISOString()}.jpg`.replace(/:/g, '-');
+    // const newImageFilePath = `${PATHS.IMAGES}/${new Date().toISOString().replace('.', '-')}.jpg`.replace(/:/g, '-');
+    const newImageFilePath = `${PATHS.IMAGES}/${image.id}.jpg`;
     if (Platform.OS === 'ios') {
       RNFS.copyAssetsFileIOS(croppedImage.path, newImageFilePath, 0, 0)
         // eslint-disable-next-line no-unused-vars
@@ -52,6 +53,7 @@ function EditImage({ navigation, route }) { // route.params: title, image
     const newImage = {
       id: image.id,
       path: newImageFilePath,
+      uri: croppedImage.path,
       width: croppedImage.width,
       height: croppedImage.height,
       mime: croppedImage.mime,
@@ -66,18 +68,26 @@ function EditImage({ navigation, route }) { // route.params: title, image
           <Row>
             <ImageLoad
               style={{ width: '100%', height: 200 }}
-              source={{ uri: Platform.OS === 'ios' ? image.path : `file://${image.path}` }}
-              // source={image}
-              // source={{ uri: image.path }}
+              // source={{
+              //   uri: Platform.OS === 'ios' ? image.path : `file://${image.path}`,
+              //   mime: image.mime
+              // }}
+              source={image} // blup
             />
           </Row>
 
           {/* blup: */}
           <Row>
+            <Text>id: </Text>
             <Text>{image.id}</Text>
           </Row>
           <Row>
+            <Text>path: </Text>
             <Text>{Platform.OS === 'ios' ? image.path : `file://${image.path}` }</Text>
+          </Row>
+          <Row>
+            <Text>uri: </Text>
+            <Text>{image.uri }</Text>
           </Row>
 
           <Row>

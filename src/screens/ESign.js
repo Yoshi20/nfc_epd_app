@@ -161,6 +161,21 @@ function ESign({ navigation, route }) { // route.params: eSign, originScreen, de
     }
   };
 
+  const moveImageDown = async (id) => {
+    try {
+      const newImagesArray = imagesArray.slice(); // copy the state array
+      // find index of the image to move
+      const currentImageIndex = newImagesArray.findIndex((img) => {
+        return img.id === id;
+      });
+      newImagesArray.splice(currentImageIndex + 1, 0, newImagesArray.splice(currentImageIndex, 1)[0]);
+      setImagesArray(newImagesArray);
+      updateESignsArray(newImagesArray);
+    } catch (e) {
+      Logger.error('moveImage failed! Error:', e);
+    }
+  };
+
   return (
     <Container>
       <Content>
@@ -196,6 +211,7 @@ function ESign({ navigation, route }) { // route.params: eSign, originScreen, de
                 isImageUploadAllowed={!uploadActivated}
                 uploadActivatedCallback={uploadActivatedCallback}
                 deleteImage={deleteImage}
+                moveImageDown={moveImageDown}
                 uploadFinishedCallback={uploadFinishedCallback}
                 // imageData={image1Raw}
                 imageData={image.byteArray}

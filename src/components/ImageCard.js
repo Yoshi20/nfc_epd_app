@@ -18,6 +18,7 @@ function ImageCard(props) {
     uploadActivatedCallback,
     uploadFinishedCallback,
     deleteImage,
+    moveImageDown,
     imageData
   } = props;
 
@@ -114,11 +115,11 @@ function ImageCard(props) {
                       Toast.show({ text: 'Bild kann nun via NFC aufs Display geladen werden', duration: 3000 });
                     }}
                   >
-                    <Icon type="MaterialCommunityIcons" name="nfc" style={{ color: isImageUploadAllowed ? 'black' : 'grey', fontSize: 40, marginTop: 20, marginLeft: -3, marginRight: 0 }} />
-                    {/* <Icon name="paper-plane" style={{ color: isImageUploadAllowed ? 'black' : 'grey', fontSize: 40, marginTop: 20, marginLeft: 0, marginRight: 0 }} /> */}
-                    {/* <Icon name="paw" style={{color: "black", fontSize: 40, marginTop: 20, marginLeft: 1, marginRight: 0}} /> */}
-                    {/* <Icon name="color-wand" style={{color: "black", fontSize: 40, marginTop: 20, marginLeft: 2, marginRight: 0}} /> */}
-                    {/* <Icon name="wifi" style={{color: "black", fontSize: 40, marginTop: 20, marginLeft: 1, marginRight: 0}} /> */}
+                    <Icon type="MaterialCommunityIcons" name="nfc" style={{ color: isImageUploadAllowed ? 'black' : 'grey', fontSize: 40, marginTop: 10, marginLeft: -3, marginRight: 0 }} />
+                    {/* <Icon name="paper-plane" style={{ color: isImageUploadAllowed ? 'black' : 'grey', fontSize: 40, marginTop: 10, marginLeft: 0, marginRight: 0 }} /> */}
+                    {/* <Icon name="paw" style={{color: "black", fontSize: 40, marginTop: 10, marginLeft: 1, marginRight: 0}} /> */}
+                    {/* <Icon name="color-wand" style={{color: "black", fontSize: 40, marginTop: 10, marginLeft: 2, marginRight: 0}} /> */}
+                    {/* <Icon name="wifi" style={{color: "black", fontSize: 40, marginTop: 10, marginLeft: 1, marginRight: 0}} /> */}
                     {/* <Image source={ images/nfc-icon.jpg } style={{marginTop: 7, marginBottom: 'auto', marginLeft: -2}} /> */}
                   </TouchableOpacity>
                   )}
@@ -133,8 +134,8 @@ function ImageCard(props) {
                       Toast.show({ text: 'Übertragung wurde abgebrochen' });
                     }}
                   >
-                    {/* <Icon name="close" style={{color: "black", fontSize: 40, marginTop: 20, marginLeft: 6, marginRight: 0}} /> */}
-                    <Icon name="close-circle" style={{ color: 'black', fontSize: 40, marginTop: 20, marginLeft: 1, marginRight: 0 }} />
+                    {/* <Icon name="close" style={{color: "black", fontSize: 40, marginTop: 10, marginLeft: 6, marginRight: 0}} /> */}
+                    <Icon name="close-circle" style={{ color: 'black', fontSize: 40, marginTop: 10, marginLeft: 1, marginRight: 0 }} />
                   </TouchableOpacity>
                   )}
 
@@ -149,7 +150,7 @@ function ImageCard(props) {
                     navigation.navigate('EditImage', { image });
                   }}
                 >
-                  <Icon name="create" style={{ color: ((route.params?.originScreen === 'Vorlagen') ? 'gray' : 'balck'), fontSize: 40, marginTop: 20, marginLeft: 3, marginRight: 0 }} />
+                  <Icon name="create" style={{ color: ((route.params?.originScreen === 'Vorlagen') ? 'gray' : 'balck'), fontSize: 40, marginTop: 5, marginLeft: 3, marginRight: 0 }} />
                 </TouchableOpacity>
               </Button>
             </Row>
@@ -178,7 +179,20 @@ function ImageCard(props) {
                     );
                   }}
                 >
-                  <Icon name="trash" style={{ color: ((route.params?.originScreen === 'Vorlagen') ? 'gray' : 'balck'), fontSize: 40, marginTop: 20, marginLeft: 5, marginRight: 0 }} />
+                  <Icon name="trash" style={{ color: ((route.params?.originScreen === 'Vorlagen') ? 'gray' : 'balck'), fontSize: 40, marginTop: 5, marginLeft: 5, marginRight: 0 }} />
+                </TouchableOpacity>
+              </Button>
+            </Row>
+
+            <Row>
+              <Button transparent disabled>
+                <TouchableOpacity
+                  disabled={route.params?.originScreen === 'Vorlagen'}
+                  onPress={() => {
+                    moveImageDown(image.id);
+                  }}
+                >
+                  <Icon type="MaterialCommunityIcons" name="arrow-down-bold" style={{ color: ((route.params?.originScreen === 'Vorlagen') ? 'gray' : 'balck'), fontSize: 40, marginTop: 5, marginLeft: -3, marginRight: 0 }} />
                 </TouchableOpacity>
               </Button>
             </Row>

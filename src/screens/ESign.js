@@ -137,8 +137,10 @@ function ESign({ navigation, route }) { // route.params: eSign, originScreen, de
       newImagesArray.push(newImage);
       setImagesArray(newImagesArray);
       updateESignsArray(newImagesArray);
+      return newImage;
     } catch (e) {
       Logger.error('AddImage failed! Error:', e);
+      return null;
     }
   };
 
@@ -225,15 +227,18 @@ function ESign({ navigation, route }) { // route.params: eSign, originScreen, de
             <Button block transparent style={{ marginTop: 20 }}>
               <TouchableOpacity
                 onPress={() => {
-                  // navigation.navigate('AddImage', {});
-                  addImage();
+                  (async function () {
+                    const newImage = await addImage();
+                    navigation.navigate('EditImage', { title: 'Neues Bild', image: newImage });
+                    // navigation.navigate('AddImage', { title: 'Neues Bild', image: newImage });
+                  }());
                 }}
               >
                 <Icon name="add-circle" style={{ color: 'orange', fontSize: 40 }} />
               </TouchableOpacity>
             </Button>
           )}
-        {/* {route.params?.originScreen !== 'Vorlagen'
+        {route.params?.originScreen !== 'Vorlagen'
           && (
             <Button block transparent>
               <TouchableOpacity
@@ -244,7 +249,7 @@ function ESign({ navigation, route }) { // route.params: eSign, originScreen, de
                 <Icon name="remove-circle" style={{ color: 'red', fontSize: 40 }} />
               </TouchableOpacity>
             </Button>
-          )} */}
+          )}
 
       </Content>
     </Container>

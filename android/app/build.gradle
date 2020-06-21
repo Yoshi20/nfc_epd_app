@@ -136,6 +136,7 @@ android {
         versionName "0.0.1"
         missingDimensionStrategy 'react-native-camera', 'general'   // https://react-native-community.github.io/react-native-camera/docs/installation.html
         multiDexEnabled true
+        vectorDrawables.useSupportLibrary = true
     }
     splits {
         abi {

@@ -147,7 +147,7 @@ function ImageCard(props) {
                 <TouchableOpacity
                   disabled={route.params?.originScreen === 'Vorlagen'}
                   onPress={() => {
-                    navigation.navigate('EditImage', { image });
+                    navigation.navigate('EditImage', { title: 'Bild bearbeiten', image });
                   }}
                 >
                   <Icon name="create" style={{ color: ((route.params?.originScreen === 'Vorlagen') ? 'gray' : 'balck'), fontSize: 40, marginTop: 5, marginLeft: 3, marginRight: 0 }} />

@@ -14,10 +14,10 @@ function ImageCard(props) {
     route,
     image,
     originScreen,
-    updateESignsArray,
     isImageUploadAllowed,
     uploadActivatedCallback,
     uploadFinishedCallback,
+    deleteImage,
     imageData
   } = props;
 
@@ -170,14 +170,7 @@ function ImageCard(props) {
                         {
                           text: 'Ja',
                           onPress: () => {
-                            const newESign = { ...route.params.eSign }; // copy eSign object
-                            // find index of the image to delete
-                            const currentImageIndex = newESign.images.findIndex((im) => {
-                              return im.id === image.id;
-                            });
-                            newESign.images.splice(currentImageIndex, 1); // this removes one image at given position
-                            navigation.setParams({ eSign: newESign }); // update current screen
-                            updateESignsArray(newESign.images);
+                            deleteImage(image.id);
                           }
                         }
                       ],

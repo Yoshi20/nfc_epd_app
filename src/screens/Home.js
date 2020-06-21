@@ -41,7 +41,7 @@ function Home({ navigation, route }) {
       const newESign = {
         // random hex string id with 16 characters:
         id: (Math.random().toString(16).substring(2, 10) + Math.random().toString(16).substring(2, 10)),
-        name: `E-Sign #${eSignsArray.length + 1}`,
+        name: `Mein E-Sign #${eSignsArray.length + 1}`,
         images: [],
       };
       const newESignsArray = eSignsArray.slice(); // copy the state array
@@ -98,6 +98,7 @@ function Home({ navigation, route }) {
                 route={route}
                 eSign={eSign}
                 originScreen="Home"
+                deleteESign={deleteESign}
                 //name={eSign.name}
                 //images={[{ path: `${RNFS.PicturesDirectoryPath}/Zelda/zelda.jpg`, pos: 0 }, { path: `${PATHS.IMAGES}/moby.jpg`, pos: 1 }]} // blup
               />
@@ -105,7 +106,7 @@ function Home({ navigation, route }) {
           }
         </View>
 
-        <Button block transparent>
+        <Button block transparent style={{ marginTop: 20 }}>
           <TouchableOpacity
             onPress={() => {
               addESign();
@@ -115,7 +116,7 @@ function Home({ navigation, route }) {
           </TouchableOpacity>
         </Button>
 
-        <Button block transparent>
+        {/* <Button block transparent>
           <TouchableOpacity
             onPress={() => {
               deleteESign();
@@ -123,7 +124,7 @@ function Home({ navigation, route }) {
           >
             <Icon name="remove-circle" style={{ color: 'red', fontSize: 40 }} />
           </TouchableOpacity>
-        </Button>
+        </Button> */}
 
       </Content>
     </Container>

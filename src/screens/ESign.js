@@ -12,7 +12,7 @@ import image5Raw from '../assets/images/testRaw/image5';
 const ninjaJpgSrc = require('../assets/images/testJpg/ninja.jpg');
 const mobyJpgSrc = require('../assets/images/testJpg/moby.jpg');
 
-function ESign({ navigation, route }) { // route.params: eSign, originScreen
+function ESign({ navigation, route }) { // route.params: eSign, originScreen, deleteESign
   // const [name, setName] = useState(route.params?.name);
   const [imagesArray, setImagesArray] = useState(route.params?.eSign.images);
   const [uploadActivated, setUploadActivated] = useState(false);
@@ -25,6 +25,10 @@ function ESign({ navigation, route }) { // route.params: eSign, originScreen
   //     // For example, send the post to the server
   //   }
   // }, [route.params?.post]);
+
+  const deleteThisESign = async () => {
+    await route.params.deleteESign(route.params?.eSign.id);
+  };
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -53,7 +57,8 @@ function ESign({ navigation, route }) { // route.params: eSign, originScreen
                       {
                         text: 'Ja',
                         onPress: () => {
-                          navigation.navigate(route.params.originScreen, { deleteESignId: route.params?.eSign.id });
+                          deleteThisESign();
+                          navigation.navigate(route.params.originScreen);
                         }
                       }
                     ],
@@ -66,26 +71,29 @@ function ESign({ navigation, route }) { // route.params: eSign, originScreen
               </Col>
             )}
           <Col style={{ marginRight: 10 }}>
-            <TouchableOpacity onPress={() => {
-              Alert.alert(
-                'Alle Bilder aufs E-Sign laden?',
-                'Schalte die NFC Funktion ein und lege dein Handy auf die Mitte des E-Signs.',
-                [
-                  {
-                    text: 'Nein',
-                    onPress: () => console.log('Cancel Pressed'),
-                    style: 'cancel'
-                  },
-                  {
-                    text: 'Ja',
-                    onPress: () => console.log('OK Pressed')
-                  }
-                ],
-                { cancelable: true }
-              );
-            }}
+            <TouchableOpacity
+              // disabled={(imagesArray.length === 0)}
+              onPress={() => {
+                Alert.alert(
+                  'Alle Bilder aufs E-Sign laden?',
+                  'Schalte die NFC Funktion ein und lege dein Handy auf die Mitte des E-Signs.',
+                  [
+                    {
+                      text: 'Nein',
+                      onPress: () => console.log('Cancel Pressed'),
+                      style: 'cancel'
+                    },
+                    {
+                      text: 'Ja',
+                      onPress: () => console.log('OK Pressed')
+                    }
+                  ],
+                  { cancelable: true }
+                );
+              }}
             >
               <Icon type="MaterialCommunityIcons" name="nfc" style={{ color: 'white', fontSize: 40 }} />
+              {/* <Icon type="MaterialCommunityIcons" name="nfc" style={{ color: (imagesArray.length === 0) ? 'grey' : 'white', fontSize: 40 }} /> */}
             </TouchableOpacity>
           </Col>
         </Grid>
@@ -134,10 +142,18 @@ function ESign({ navigation, route }) { // route.params: eSign, originScreen
     }
   };
 
-  const deleteImage = async () => {
+  const deleteImage = async (id) => {
     try {
       const newImagesArray = imagesArray.slice(); // copy the state array
-      newImagesArray.pop();
+      if (id) {
+        // find index of the image to delete
+        const currentImageIndex = newImagesArray.findIndex((img) => {
+          return img.id === id;
+        });
+        newImagesArray.splice(currentImageIndex, 1); // this removes one image at given position
+      } else {
+        newImagesArray.pop();
+      }
       setImagesArray(newImagesArray);
       updateESignsArray(newImagesArray);
     } catch (e) {
@@ -177,9 +193,9 @@ function ESign({ navigation, route }) { // route.params: eSign, originScreen
                 route={route}
                 image={image}
                 originScreen={route.params?.originScreen}
-                updateESignsArray={updateESignsArray}
                 isImageUploadAllowed={!uploadActivated}
                 uploadActivatedCallback={uploadActivatedCallback}
+                deleteImage={deleteImage}
                 uploadFinishedCallback={uploadFinishedCallback}
                 // imageData={image1Raw}
                 imageData={image.byteArray}
@@ -190,7 +206,7 @@ function ESign({ navigation, route }) { // route.params: eSign, originScreen
 
         {route.params?.originScreen !== 'Vorlagen'
           && (
-            <Button block transparent>
+            <Button block transparent style={{ marginTop: 20 }}>
               <TouchableOpacity
                 onPress={() => {
                   // navigation.navigate('AddImage', {});
@@ -201,7 +217,7 @@ function ESign({ navigation, route }) { // route.params: eSign, originScreen
               </TouchableOpacity>
             </Button>
           )}
-        {route.params?.originScreen !== 'Vorlagen'
+        {/* {route.params?.originScreen !== 'Vorlagen'
           && (
             <Button block transparent>
               <TouchableOpacity
@@ -212,7 +228,7 @@ function ESign({ navigation, route }) { // route.params: eSign, originScreen
                 <Icon name="remove-circle" style={{ color: 'red', fontSize: 40 }} />
               </TouchableOpacity>
             </Button>
-          )}
+          )} */}
 
       </Content>
     </Container>

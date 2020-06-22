@@ -206,25 +206,23 @@ function ESignCard({ navigation, route, name, images, screen }) {
             ))} */}
 
             <Row size={80}>
-              {(images.length === 0)
-                && (
-                  // <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                  //   <Icon name="laptop" style={{ height: 100, paddingTop: 35 }} />
-                  // </View>
-                  <ImageLoad
-                    source={{ uri: 'file' }}
-                    style={{ height: 100, width: '100%' }}
+              {(images.length === 0) && (
+                // <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                //   <Icon name="laptop" style={{ height: 100, paddingTop: 35 }} />
+                // </View>
+                <ImageLoad
+                  style={{ height: 100, width: '100%' }}
+                  source={{ uri: 'file' }}
+                />
+              )}
+              {(images.length > 0) && (
+                images.map(image => (
+                  <Image
+                    style={{ height: 100, width: `${100 / images.length}%` }}
+                    source={{ uri: Platform.OS === 'ios' ? image.path : `${screen === 'Vorlagen' ? 'asset://' : 'file://'}${image.path}` }}
                   />
-                )}
-              {(images.length > 0)
-                && (
-                  images.map(image => (
-                    <Image
-                      source={{ uri: Platform.OS === 'ios' ? image.path : `${screen === 'Vorlagen' ? 'asset://' : 'file://'}${image.path}` }}
-                      style={{ height: 100, width: `${100 / images.length}%` }}
-                    />
-                  ))
-                )}
+                ))
+              )}
             </Row>
 
           </Grid>

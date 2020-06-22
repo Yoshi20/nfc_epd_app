@@ -38,25 +38,23 @@ function ESignCard(props) {
             ))} */}
 
             <Row size={80}>
-              {(eSign.images.length === 0)
-                && (
-                  // <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                  //   <Icon name="laptop" style={{ height: 100, paddingTop: 35 }} />
-                  // </View>
-                  <ImageLoad
-                    source={{ uri: 'file' }}
-                    style={{ height: 100, width: '100%' }}
+              {(eSign.images.length === 0) && (
+                // <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                //   <Icon name="laptop" style={{ height: 100, paddingTop: 35 }} />
+                // </View>
+                <ImageLoad
+                  style={{ height: 100, width: '100%' }}
+                  source={{ uri: 'file' }}
+                />
+              )}
+              {(eSign.images.length > 0) && (
+                eSign.images.map(image => (
+                  <Image
+                    style={{ height: 100, width: `${100 / eSign.images.length}%` }}
+                    source={{ uri: Platform.OS === 'ios' ? image.path : `${originScreen === 'Vorlagen' ? 'asset://' : 'file://'}${image.path}` }}
                   />
-                )}
-              {(eSign.images.length > 0)
-                && (
-                  eSign.images.map(image => (
-                    <Image
-                      source={{ uri: Platform.OS === 'ios' ? image.path : `${originScreen === 'Vorlagen' ? 'asset://' : 'file://'}${image.path}` }}
-                      style={{ height: 100, width: `${100 / eSign.images.length}%` }}
-                    />
-                  ))
-                )}
+                ))
+              )}
             </Row>
           </Grid>
         </CardItem>

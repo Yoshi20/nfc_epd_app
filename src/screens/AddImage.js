@@ -51,15 +51,15 @@ function AddImage({ navigation, route }) {
       <Content>
         <Grid>
           <Row>
-            {currentImagePath !== '' && (
-              <Image
-                style={{ width: '100%', height: 200, resizeMode: 'stretch' }}
-                source={{ uri: Platform.OS === 'ios' ? currentImagePath : `file://${currentImagePath}` }}
-              />
-            )}
             {currentImagePath === '' && (
               <ImageLoad
                 style={{ width: '100%', height: 200 }}
+                source={{ uri: 'file' }}
+              />
+            )}
+            {currentImagePath !== '' && (
+              <Image
+                style={{ width: '100%', height: 200, resizeMode: 'stretch' }}
                 source={{ uri: Platform.OS === 'ios' ? currentImagePath : `file://${currentImagePath}` }}
               />
             )}

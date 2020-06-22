@@ -3,11 +3,10 @@ import { Platform, Alert, Image, TouchableOpacity, View } from 'react-native';
 import { Container, Content, Icon, Text } from 'native-base';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import ImageLoad from 'react-native-image-placeholder';
-import ImagePicker0 from 'react-native-image-picker';
 import ImagePicker from 'react-native-image-crop-picker';
-import ImageResizer from 'react-native-image-resizer';
 import RNFS from 'react-native-fs';
 import { PATHS, DIMENSIONS } from '../constants';
+import Logger from '../services';
 
 function EditImage({ navigation, route }) { // route.params: title, image
   const [image, setImage] = useState(route.params.image);
@@ -18,46 +17,41 @@ function EditImage({ navigation, route }) { // route.params: title, image
     });
   }, []);
 
-  function copyAndUpdateCroppedImage(croppedImage) {
+  async function copyAndUpdateCroppedImage(croppedImage) {
     /* Create images dir if it doesn't exist yet */
-    RNFS.mkdir(PATHS.IMAGES, { NSURLIsExcludedFromBackupKey: true });
+    await RNFS.mkdir(PATHS.IMAGES, { NSURLIsExcludedFromBackupKey: true }).catch((e) => {
+      Logger.error('mkdir failed! Error:', e);
+    });
 
-    /* Copy cropped image into the images dir */
-    // const newImageFilePath = `${PATHS.IMAGES}/${new Date().toISOString().replace('.', '-')}.jpg`.replace(/:/g, '-');
-    const newImageFilePath = `${PATHS.IMAGES}/${image.id}.jpg`;
-    if (Platform.OS === 'ios') {
-      RNFS.copyAssetsFileIOS(croppedImage.path, newImageFilePath, 0, 0)
-        // eslint-disable-next-line no-unused-vars
-        .then((res) => {
-          console.log('FILE WRITTEN');
-          console.log(newImageFilePath);
-        })
-        .catch((err) => {
-          console.log('ERROR: image file write failed!!!');
-          console.log(err.message, err.code);
-        });
-    } else if (Platform.OS === 'android') {
-      RNFS.copyFile(croppedImage.path, newImageFilePath)
-      // eslint-disable-next-line no-unused-vars
-        .then((res) => {
-          console.log('FILE WRITTEN');
-          console.log(newImageFilePath);
-        })
-        .catch((err) => {
-          console.log('ERROR: image file write failed!!!');
-          console.log(err.message, err.code);
-        });
+    /* Delete last image if its present */
+    if (image.path) {
+      await RNFS.unlink(image.path).catch((e) => {
+        Logger.error('delete file failed! Error:', e);
+      });
     }
 
-    /* Update the image object */
+    /* Create new image object */
+    const newImageId = (Math.random().toString(16).substring(2, 10) + Math.random().toString(16).substring(2, 10));
     const newImage = {
-      id: image.id,
-      path: newImageFilePath,
-      uri: croppedImage.path,
+      // random hex string id with 16 characters:
+      id: newImageId,
+      path: `${PATHS.IMAGES}/${newImageId}.jpg`,
       width: croppedImage.width,
       height: croppedImage.height,
       mime: croppedImage.mime,
     };
+
+    /* Copy cropped image into the images dir */
+    try {
+      if (Platform.OS === 'ios') {
+        await RNFS.copyAssetsFileIOS(croppedImage.path, newImage.path, 0, 0);
+      } else if (Platform.OS === 'android') {
+        await RNFS.copyFile(croppedImage.path, newImage.path);
+      }
+    } catch (e) {
+      Logger.error('copy file failed! Error:', e);
+    }
+    /* Update image */
     setImage(newImage);
   }
 
@@ -66,14 +60,21 @@ function EditImage({ navigation, route }) { // route.params: title, image
       <Content>
         <Grid>
           <Row>
-            <ImageLoad
-              style={{ width: '100%', height: 200 }}
-              // source={{
-              //   uri: Platform.OS === 'ios' ? image.path : `file://${image.path}`,
-              //   mime: image.mime
-              // }}
-              source={image} // blup
-            />
+            {(image.path === '') && (
+              <ImageLoad
+                style={{ width: '100%', height: 200 }}
+                source={{ uri: 'file' }}
+              />
+            )}
+            {(image.path !== '') && (
+              <Image
+                style={{ width: '100%', height: 200 }}
+                source={{
+                  uri: Platform.OS === 'ios' ? image.path : `file://${image.path}`,
+                  mime: image.mime
+                }}
+              />
+            )}
           </Row>
 
           {/* blup: */}
@@ -85,13 +86,9 @@ function EditImage({ navigation, route }) { // route.params: title, image
             <Text>path: </Text>
             <Text>{Platform.OS === 'ios' ? image.path : `file://${image.path}` }</Text>
           </Row>
-          <Row>
-            <Text>uri: </Text>
-            <Text>{image.uri }</Text>
-          </Row>
 
           <Row>
-            <Col size={50}>
+            <Col>
               <TouchableOpacity
                 onPress={() => {
                   ImagePicker.openPicker({
@@ -108,10 +105,10 @@ function EditImage({ navigation, route }) { // route.params: title, image
                 }}
               >
                 <Text>{image.path ? 'Ersetzen' : 'Auswählen'}</Text>
-                <Icon type="MaterialCommunityIcons" name="folder-multiple-image" style={{ color: 'black', fontSize: 40 }} />
+                <Icon type="MaterialCommunityIcons" name="folder-multiple-image" style={{ fontSize: 40 }} />
               </TouchableOpacity>
             </Col>
-            <Col size={50}>
+            <Col>
               <TouchableOpacity
                 onPress={() => {
                   ImagePicker.openCamera({
@@ -128,34 +125,33 @@ function EditImage({ navigation, route }) { // route.params: title, image
                 }}
               >
                 <Text>Kamera</Text>
-                <Icon type="MaterialCommunityIcons" name="camera" style={{ color: 'black', fontSize: 40 }} />
+                <Icon type="MaterialCommunityIcons" name="camera" style={{ fontSize: 40 }} />
               </TouchableOpacity>
             </Col>
           </Row>
 
-          {(image.path !== '')
-            && (
-              <Row>
-                <Col>
-                  <TouchableOpacity>
-                    <Text>Invertieren</Text>
-                    <Icon name="contrast" style={{ color: 'black', fontSize: 40 }} />
-                  </TouchableOpacity>
-                </Col>
-                <Col>
-                  <TouchableOpacity>
-                    <Text>Löschen</Text>
-                    <Icon name="trash" style={{ color: 'black', fontSize: 40 }} />
-                  </TouchableOpacity>
-                </Col>
-                <Col>
-                  <TouchableOpacity>
-                    <Text>Drehen</Text>
-                    <Icon name="refresh" style={{ color: 'black', fontSize: 40 }} />
-                  </TouchableOpacity>
-                </Col>
-              </Row>
-            )}
+          {(image.path !== '') && (
+            <Row>
+              <Col>
+                <TouchableOpacity>
+                  <Text>Invertieren</Text>
+                  <Icon name="contrast" style={{ fontSize: 40 }} />
+                </TouchableOpacity>
+              </Col>
+              <Col>
+                <TouchableOpacity>
+                  <Text>Löschen</Text>
+                  <Icon name="trash" style={{ fontSize: 40 }} />
+                </TouchableOpacity>
+              </Col>
+              <Col>
+                <TouchableOpacity>
+                  <Text>Drehen</Text>
+                  <Icon name="refresh" style={{ fontSize: 40 }} />
+                </TouchableOpacity>
+              </Col>
+            </Row>
+          )}
 
         </Grid>
       </Content>

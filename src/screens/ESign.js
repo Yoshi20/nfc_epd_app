@@ -42,34 +42,33 @@ function ESign({ navigation, route }) { // route.params: eSign, originScreen, de
       // ),
       headerRight: () => (
         <Grid style={{ marginTop: 5 }}>
-          {route.params?.originScreen !== 'Vorlagen'
-            && (
-              <Col style={{ marginTop: 4, marginRight: 30 }}>
-                <TouchableOpacity onPress={() => {
-                  Alert.alert(
-                    'E-Sign wirklich löschen?',
-                    'Alle Bilder dieses E-Singes werden gelöscht. Dieser Schritt kann nicht rückgängig gemacht werden.',
-                    [
-                      {
-                        text: 'Nein',
-                        style: 'cancel'
-                      },
-                      {
-                        text: 'Ja',
-                        onPress: () => {
-                          deleteThisESign();
-                          navigation.navigate(route.params.originScreen);
-                        }
+          {(route.params?.originScreen !== 'Vorlagen') && (
+            <Col style={{ marginTop: 4, marginRight: 30 }}>
+              <TouchableOpacity onPress={() => {
+                Alert.alert(
+                  'E-Sign wirklich löschen?',
+                  'Alle Bilder dieses E-Singes werden gelöscht. Dieser Schritt kann nicht rückgängig gemacht werden.',
+                  [
+                    {
+                      text: 'Nein',
+                      style: 'cancel'
+                    },
+                    {
+                      text: 'Ja',
+                      onPress: () => {
+                        deleteThisESign();
+                        navigation.navigate(route.params.originScreen);
                       }
-                    ],
-                    { cancelable: true }
-                  );
-                }}
-                >
-                  <Icon name="trash" style={{ color: 'white', fontSize: 36 }} />
-                </TouchableOpacity>
-              </Col>
-            )}
+                    }
+                  ],
+                  { cancelable: true }
+                );
+              }}
+              >
+                <Icon name="trash" style={{ color: 'white', fontSize: 36 }} />
+              </TouchableOpacity>
+            </Col>
+          )}
           <Col style={{ marginRight: 10 }}>
             <TouchableOpacity
               // disabled={(imagesArray.length === 0)}
@@ -222,34 +221,32 @@ function ESign({ navigation, route }) { // route.params: eSign, originScreen, de
           }
         </View>
 
-        {route.params?.originScreen !== 'Vorlagen'
-          && (
-            <Button block transparent style={{ marginTop: 20 }}>
-              <TouchableOpacity
-                onPress={() => {
-                  (async function () {
-                    const newImage = await addImage();
-                    navigation.navigate('EditImage', { title: 'Neues Bild', image: newImage });
-                    // navigation.navigate('AddImage', { title: 'Neues Bild', image: newImage });
-                  }());
-                }}
-              >
-                <Icon name="add-circle" style={{ color: 'orange', fontSize: 40 }} />
-              </TouchableOpacity>
-            </Button>
-          )}
-        {route.params?.originScreen !== 'Vorlagen'
-          && (
-            <Button block transparent>
-              <TouchableOpacity
-                onPress={() => {
-                  deleteImage();
-                }}
-              >
-                <Icon name="remove-circle" style={{ color: 'red', fontSize: 40 }} />
-              </TouchableOpacity>
-            </Button>
-          )}
+        {(route.params?.originScreen !== 'Vorlagen') && (
+          <Button block transparent style={{ marginTop: 20 }}>
+            <TouchableOpacity
+              onPress={() => {
+                (async function () {
+                  const newImage = await addImage();
+                  navigation.navigate('EditImage', { title: 'Neues Bild', image: newImage });
+                  // navigation.navigate('AddImage', { title: 'Neues Bild', image: newImage });
+                }());
+              }}
+            >
+              <Icon name="add-circle" style={{ color: 'orange', fontSize: 40 }} />
+            </TouchableOpacity>
+          </Button>
+        )}
+        {(route.params?.originScreen !== 'Vorlagen') && (
+          <Button block transparent>
+            <TouchableOpacity
+              onPress={() => {
+                deleteImage();
+              }}
+            >
+              <Icon name="remove-circle" style={{ color: 'red', fontSize: 40 }} />
+            </TouchableOpacity>
+          </Button>
+        )}
 
       </Content>
     </Container>

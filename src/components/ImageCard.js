@@ -57,10 +57,20 @@ function ImageCard(props) {
       <CardItem cardBody style={{ padding: 5 }}>
         <Grid>
           <Col size={90}>
-            <ImageLoad
-              style={{ width: '100%', height: 200 }}
-              source={{ uri: Platform.OS === 'ios' ? image.path : `${originScreen === 'Vorlagen' ? 'asset://' : 'file://'}${image.path}` }}
-            />
+
+            {(image.path === '') && (
+              <ImageLoad
+                style={{ width: '100%', height: 200 }}
+                source={{ uri: 'file' }}
+              />
+            )}
+            {(image.path !== '') && (
+              <Image
+                style={{ width: '100%', height: 200 }}
+                source={{ uri: Platform.OS === 'ios' ? image.path : `${originScreen === 'Vorlagen' ? 'asset://' : 'file://'}${image.path}` }}
+              />
+            )}
+
             {uploadingStarted && <UIActivityIndicator style={{ position: 'absolute', top: '39%', left: '43%' }} color="orange" />}
             {/* {uploadingStarted && <PacmanIndicator style={{position: 'absolute', top: '37%', left: '40%'}} color='orange'></PacmanIndicator>} */}
             {/* {uploadingStarted && <BallIndicator style={{position: 'absolute', top: '37%', left: '40%'}} color='orange'></BallIndicator>} */}
@@ -104,40 +114,38 @@ function ImageCard(props) {
                   <Icon type="MaterialCommunityIcons" name="nfc" style={{ color: isImageUploadAllowed ? 'black' : 'grey', fontSize: 40, marginTop: 20, marginLeft: -3, marginRight: 0 }} />
                 </TouchableOpacity> */}
 
-                {!uploading
-                  && (
-                  <TouchableOpacity
-                    disabled={!isImageUploadAllowed}
-                    onPress={() => {
-                      uploadActivatedCallback();
-                      ST25DV.uploadImage(imageData, uploadStarted, uploadOk, uploadFailed);
-                      setUploading(true);
-                      Toast.show({ text: 'Bild kann nun via NFC aufs Display geladen werden', duration: 3000 });
-                    }}
-                  >
-                    <Icon type="MaterialCommunityIcons" name="nfc" style={{ color: isImageUploadAllowed ? 'black' : 'grey', fontSize: 40, marginTop: 10, marginLeft: -3, marginRight: 0 }} />
-                    {/* <Icon name="paper-plane" style={{ color: isImageUploadAllowed ? 'black' : 'grey', fontSize: 40, marginTop: 10, marginLeft: 0, marginRight: 0 }} /> */}
-                    {/* <Icon name="paw" style={{color: "black", fontSize: 40, marginTop: 10, marginLeft: 1, marginRight: 0}} /> */}
-                    {/* <Icon name="color-wand" style={{color: "black", fontSize: 40, marginTop: 10, marginLeft: 2, marginRight: 0}} /> */}
-                    {/* <Icon name="wifi" style={{color: "black", fontSize: 40, marginTop: 10, marginLeft: 1, marginRight: 0}} /> */}
-                    {/* <Image source={ images/nfc-icon.jpg } style={{marginTop: 7, marginBottom: 'auto', marginLeft: -2}} /> */}
-                  </TouchableOpacity>
-                  )}
-                {uploading
-                  && (
-                  <TouchableOpacity
-                    onPress={() => {
-                      ST25DV._cancel();
-                      setUploading(false);
-                      setUploadingStarted(false);
-                      uploadFinishedCallback();
-                      Toast.show({ text: 'Übertragung wurde abgebrochen' });
-                    }}
-                  >
-                    {/* <Icon name="close" style={{color: "black", fontSize: 40, marginTop: 10, marginLeft: 6, marginRight: 0}} /> */}
-                    <Icon name="close-circle" style={{ color: 'black', fontSize: 40, marginTop: 10, marginLeft: 1, marginRight: 0 }} />
-                  </TouchableOpacity>
-                  )}
+                {!uploading && (
+                <TouchableOpacity
+                  disabled={!isImageUploadAllowed}
+                  onPress={() => {
+                    uploadActivatedCallback();
+                    ST25DV.uploadImage(imageData, uploadStarted, uploadOk, uploadFailed);
+                    setUploading(true);
+                    Toast.show({ text: 'Bild kann nun via NFC aufs Display geladen werden', duration: 3000 });
+                  }}
+                >
+                  <Icon type="MaterialCommunityIcons" name="nfc" style={{ color: isImageUploadAllowed ? 'black' : 'grey', fontSize: 40, marginTop: 10, marginLeft: -3, marginRight: 0 }} />
+                  {/* <Icon name="paper-plane" style={{ color: isImageUploadAllowed ? 'black' : 'grey', fontSize: 40, marginTop: 10, marginLeft: 0, marginRight: 0 }} /> */}
+                  {/* <Icon name="paw" style={{color: "black", fontSize: 40, marginTop: 10, marginLeft: 1, marginRight: 0}} /> */}
+                  {/* <Icon name="color-wand" style={{color: "black", fontSize: 40, marginTop: 10, marginLeft: 2, marginRight: 0}} /> */}
+                  {/* <Icon name="wifi" style={{color: "black", fontSize: 40, marginTop: 10, marginLeft: 1, marginRight: 0}} /> */}
+                  {/* <Image source={ images/nfc-icon.jpg } style={{marginTop: 7, marginBottom: 'auto', marginLeft: -2}} /> */}
+                </TouchableOpacity>
+                )}
+                {uploading && (
+                <TouchableOpacity
+                  onPress={() => {
+                    ST25DV._cancel();
+                    setUploading(false);
+                    setUploadingStarted(false);
+                    uploadFinishedCallback();
+                    Toast.show({ text: 'Übertragung wurde abgebrochen' });
+                  }}
+                >
+                  {/* <Icon name="close" style={{color: "black", fontSize: 40, marginTop: 10, marginLeft: 6, marginRight: 0}} /> */}
+                  <Icon name="close-circle" style={{ color: 'black', fontSize: 40, marginTop: 10, marginLeft: 1, marginRight: 0 }} />
+                </TouchableOpacity>
+                )}
 
               </Button>
             </Row>

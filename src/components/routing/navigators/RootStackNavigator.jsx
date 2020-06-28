@@ -1,10 +1,8 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import ESign from '../../../screens/ESign';
-import EditImage from '../../../screens/EditImage';
-import AddImage from '../../../screens/AddImage';
-import CropImage from '../../../screens/CropImage';
+import ESignScreen from '../../../screens/ESignScreen';
+import EditImageScreen from '../../../screens/EditImageScreen';
 import BottomTabNavigator from './BottomTabNavigator';
 
 const RootStackNavigator = () => {
@@ -23,23 +21,13 @@ const RootStackNavigator = () => {
         component={BottomTabNavigator}
       />
       <Stack.Screen
-        name="ESign"
-        component={ESign}
+        name="ESignScreen"
+        component={ESignScreen}
       />
       <Stack.Screen
-        name="EditImage"
+        name="EditImageScreen"
         options={{ headerTitle: 'Bild bearbeiten' }}
-        component={EditImage}
-      />
-      <Stack.Screen
-        name="AddImage"
-        options={{ headerTitle: 'Bild hinzufügen' }}
-        component={AddImage}
-      />
-      <Stack.Screen
-        name="CropImage"
-        options={{ headerTitle: 'Bild zuschneiden' }}
-        component={CropImage}
+        component={EditImageScreen}
       />
     </Stack.Navigator>
   );

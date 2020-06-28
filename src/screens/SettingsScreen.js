@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container, Content, Text } from 'native-base';
 
-function Settings({ navigation, route }) {
+function SettingsScreen({ navigation, route }) {
   return (
     <Container>
       <Content>
@@ -13,4 +13,4 @@ function Settings({ navigation, route }) {
   );
 }
 
-export default Settings;
+export default SettingsScreen;

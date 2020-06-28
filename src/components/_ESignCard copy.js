@@ -187,7 +187,7 @@ function ESignCard({ navigation, route, name, images, screen }) {
 
       <TouchableOpacity
         onPress={() => {
-          navigation.navigate('ESign', { navigation, route, name, images, screen });
+          navigation.navigate('ESignScreen', { navigation, route, name, images, screen });
         }}
       >
         <CardItem cardBody style={{ padding: 5, paddingBottom: 5 }}>

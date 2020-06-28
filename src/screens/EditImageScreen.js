@@ -8,7 +8,7 @@ import RNFS from 'react-native-fs';
 import { PATHS, DIMENSIONS } from '../constants';
 import Logger from '../services';
 
-function EditImage({ navigation, route }) { // route.params: title, image, updateImage
+function EditImageScreen({ navigation, route }) { // route.params: title, image, updateImage
   const [image, setImage] = useState(route.params.image);
 
   useLayoutEffect(() => {
@@ -161,4 +161,4 @@ function EditImage({ navigation, route }) { // route.params: title, image, updat
   );
 }
 
-export default EditImage;
+export default EditImageScreen;

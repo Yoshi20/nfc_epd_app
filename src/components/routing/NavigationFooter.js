@@ -9,7 +9,7 @@ function NavigationFooter({ state, navigation }) {
         <Button
           vertical
           active={state.index === 0}
-          onPress={() => { navigation.navigate('HomeTab', { screen: 'Home' }); }}
+          onPress={() => { navigation.navigate('HomeTab', { screen: 'HomeScreen' }); }}
         >
           <Icon name="images" />
           <Text>Meine E-Signs</Text>
@@ -18,7 +18,7 @@ function NavigationFooter({ state, navigation }) {
         <Button
           vertical
           active={state.index === 1}
-          onPress={() => { navigation.navigate('VorlagenTab', { screen: 'Vorlagen' }); }}
+          onPress={() => { navigation.navigate('VorlagenTab', { screen: 'VorlagenScreen' }); }}
         >
           <Icon name="easel" />
           <Text>Vorlagen</Text>
@@ -27,7 +27,7 @@ function NavigationFooter({ state, navigation }) {
         <Button
           vertical
           active={state.index === 3}
-          onPress={() => { navigation.navigate('SettingsTab', { screen: 'Settings' }); }}
+          onPress={() => { navigation.navigate('SettingsTab', { screen: 'SettingsScreen' }); }}
         >
           <Icon name="settings" />
           <Text>Einstellungen</Text>

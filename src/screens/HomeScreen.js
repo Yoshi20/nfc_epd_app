@@ -9,7 +9,7 @@ import Logger from '../services';
 import RNFS from 'react-native-fs';
 import { PATHS } from '../constants';
 
-function Home({ navigation, route }) {
+function HomeScreen({ navigation, route }) {
   const [eSignsArray, setESignsArray] = useState([]);
 
   useEffect(() => {
@@ -146,4 +146,4 @@ function Home({ navigation, route }) {
   );
 }
 
-export default Home;
+export default HomeScreen;

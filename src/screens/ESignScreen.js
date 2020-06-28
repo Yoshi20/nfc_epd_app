@@ -13,7 +13,7 @@ import image5Raw from '../assets/images/testRaw/image5';
 const ninjaJpgSrc = require('../assets/images/testJpg/ninja.jpg');
 const mobyJpgSrc = require('../assets/images/testJpg/moby.jpg');
 
-function ESign({ navigation, route }) { // route.params: eSign, originScreen, deleteESign
+function ESignScreen({ navigation, route }) { // route.params: eSign, originScreen, deleteESign
   // const [name, setName] = useState(route.params?.name);
   const [imagesArray, setImagesArray] = useState(route.params?.eSign.images);
   const [uploadActivated, setUploadActivated] = useState(false);
@@ -58,7 +58,7 @@ function ESign({ navigation, route }) { // route.params: eSign, originScreen, de
                       text: 'Ja',
                       onPress: () => {
                         deleteThisESign();
-                        navigation.navigate(route.params.originScreen);
+                        navigation.navigate(route.params.originScreen + 'Screen');
                       }
                     }
                   ],
@@ -256,12 +256,11 @@ function ESign({ navigation, route }) { // route.params: eSign, originScreen, de
               onPress={() => {
                 (async function () {
                   const newImage = await addImage();
-                  navigation.navigate('EditImage', {
+                  navigation.navigate('EditImageScreen', {
                     title: 'Neues Bild',
                     image: newImage,
                     updateImage: updateImage.bind()
                   });
-                  // navigation.navigate('AddImage', { title: 'Neues Bild', image: newImage });
                 }());
               }}
             >
@@ -286,4 +285,4 @@ function ESign({ navigation, route }) { // route.params: eSign, originScreen, de
   );
 }
 
-export default ESign;
+export default ESignScreen;

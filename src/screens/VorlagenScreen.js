@@ -11,7 +11,7 @@ const ninjaJpgSrc = require('../assets/images/testJpg/ninja.jpg');
 import imageDataNinja from '../assets/images/testRaw/image1';
 import imageDataMoby from '../assets/images/testRaw/image5';
 
-function Vorlagen({ navigation, route }) {
+function VorlagenScreen({ navigation, route }) {
   const eSign1 = {
     name: 'E-Sign Vorlage #1',
     images: [{ path: '/images/moby.jpg', byteArray: imageDataMoby, pos: 0 }],
@@ -58,4 +58,4 @@ function Vorlagen({ navigation, route }) {
   );
 }
 
-export default Vorlagen;
+export default VorlagenScreen;

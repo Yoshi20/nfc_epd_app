@@ -4,10 +4,9 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Icon } from 'native-base';
 
-import Home from '../../../screens/Home';
-import Vorlagen from '../../../screens/Vorlagen';
-import CameraTakePicture from '../../../screens/CameraTakePicture';
-import Settings from '../../../screens/Settings';
+import HomeScreen from '../../../screens/HomeScreen';
+import VorlagenScreen from '../../../screens/VorlagenScreen';
+import SettingsScreen from '../../../screens/SettingsScreen';
 import NavigationFooter from '../NavigationFooter';
 
 // since this navigator is set to headerMode: none,
@@ -19,15 +18,15 @@ const BottomTabNavigator = () => {
     <Tab.Navigator tabBar={props => <NavigationFooter {...props} />}>
       <Tab.Screen
         name="HomeTab"
-        component={withStackNavigator('Home', 'Meine E-Signs', Home)}
+        component={withStackNavigator('HomeScreen', 'Meine E-Signs', HomeScreen)}
       />
       <Tab.Screen
         name="VorlagenTab"
-        component={withStackNavigator('Vorlagen', 'E-Signs Vorlagen', Vorlagen)}
+        component={withStackNavigator('VorlagenScreen', 'E-Signs Vorlagen', VorlagenScreen)}
       />
       <Tab.Screen
         name="SettingsTab"
-        component={withStackNavigator('Settings', 'Einstellungen', Settings, {
+        component={withStackNavigator('SettingsScreen', 'Einstellungen', SettingsScreen, {
           headerRight: () => (
             <TouchableOpacity onPress={() => Alert.alert('Alert', 'Touched')}>
               <Icon name="checkmark" style={{ color: 'white', fontSize: 40, marginRight: 10 }} />

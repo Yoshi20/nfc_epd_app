@@ -162,6 +162,27 @@ function ESign({ navigation, route }) { // route.params: eSign, originScreen, de
     }
   };
 
+  const updateImage = async (id, image) => {
+    try {
+      const newImagesArray = imagesArray.slice(); // copy the state array
+      // find index of the image to update
+      const currentImageIndex = newImagesArray.findIndex((img) => {
+        return img.id === id;
+      });
+      if (currentImageIndex >= 0) {
+        /* replace image */
+        newImagesArray.splice(currentImageIndex, 1, image); // this removes one image at given position
+      } else {
+        /* add new image */
+        newImagesArray.push(image);
+      }
+      setImagesArray(newImagesArray);
+      updateESignsArray(newImagesArray);
+    } catch (e) {
+      Logger.error('updateImage failed! Error:', e);
+    }
+  };
+
   const moveImageDown = async (id) => {
     try {
       const newImagesArray = imagesArray.slice(); // copy the state array
@@ -213,6 +234,7 @@ function ESign({ navigation, route }) { // route.params: eSign, originScreen, de
                 uploadActivatedCallback={uploadActivatedCallback}
                 deleteImage={deleteImage}
                 moveImageDown={moveImageDown}
+                updateImage={updateImage}
                 uploadFinishedCallback={uploadFinishedCallback}
                 // imageData={image1Raw}
                 imageData={image.byteArray}
@@ -227,7 +249,11 @@ function ESign({ navigation, route }) { // route.params: eSign, originScreen, de
               onPress={() => {
                 (async function () {
                   const newImage = await addImage();
-                  navigation.navigate('EditImage', { title: 'Neues Bild', image: newImage });
+                  navigation.navigate('EditImage', {
+                    title: 'Neues Bild',
+                    image: newImage,
+                    updateImage: updateImage.bind()
+                  });
                   // navigation.navigate('AddImage', { title: 'Neues Bild', image: newImage });
                 }());
               }}

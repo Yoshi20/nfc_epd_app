@@ -8,7 +8,7 @@ import RNFS from 'react-native-fs';
 import { PATHS, DIMENSIONS } from '../constants';
 import Logger from '../services';
 
-function EditImage({ navigation, route }) { // route.params: title, image
+function EditImage({ navigation, route }) { // route.params: title, image, updateImage
   const [image, setImage] = useState(route.params.image);
 
   useLayoutEffect(() => {
@@ -24,6 +24,7 @@ function EditImage({ navigation, route }) { // route.params: title, image
     });
 
     /* Delete last image if its present */
+    const oldImageId = image.id;
     if (image.path) {
       await RNFS.unlink(image.path).catch((e) => {
         Logger.error('delete file failed! Error:', e);
@@ -53,6 +54,7 @@ function EditImage({ navigation, route }) { // route.params: title, image
     }
     /* Update image */
     setImage(newImage);
+    route.params.updateImage(oldImageId, newImage);
   }
 
   return (

@@ -22,15 +22,17 @@ function EditImageScreen({ navigation, route }) { // route.params: title, image,
     await RNFS.mkdir(PATHS.IMAGES, { NSURLIsExcludedFromBackupKey: true }).catch((e) => {
       Logger.error('mkdir failed! Error:', e);
     });
-
     /* Delete last image if its present */
     const oldImageId = image.id;
     if (image.path) {
-      await RNFS.unlink(image.path).catch((e) => {
-        Logger.error('delete file failed! Error:', e);
-      });
+      try {
+        await RNFS.unlink(image.path).catch((e) => {
+          Logger.error('delete file failed! Error:', e);
+        });
+      } catch {
+        // ignore File not found error
+      }
     }
-
     /* Create new image object */
     const newImageId = (Math.random().toString(16).substring(2, 10) + Math.random().toString(16).substring(2, 10));
     const newImage = {
@@ -41,7 +43,6 @@ function EditImageScreen({ navigation, route }) { // route.params: title, image,
       height: croppedImage.height,
       mime: croppedImage.mime,
     };
-
     /* Copy cropped image into the images dir */
     try {
       if (Platform.OS === 'ios') {
@@ -101,8 +102,8 @@ function EditImageScreen({ navigation, route }) { // route.params: title, image,
                     cropping: true,
                     hideBottomControls: true,
                     // includeBase64: true,
-                  }).then((croppedImage) => {
-                    copyAndUpdateCroppedImage(croppedImage);
+                  }).then(async (croppedImage) => {
+                    await copyAndUpdateCroppedImage(croppedImage);
                   });
                 }}
               >
@@ -121,8 +122,8 @@ function EditImageScreen({ navigation, route }) { // route.params: title, image,
                     cropping: true,
                     hideBottomControls: true,
                     // includeBase64: true,
-                  }).then((croppedImage) => {
-                    copyAndUpdateCroppedImage(croppedImage);
+                  }).then(async (croppedImage) => {
+                    await copyAndUpdateCroppedImage(croppedImage);
                   });
                 }}
               >

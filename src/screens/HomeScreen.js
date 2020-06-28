@@ -11,7 +11,6 @@ function HomeScreen({ navigation, route }) {
 
   useEffect(() => {
     if (route.params?.deleteESignId) {
-      console.warn('deleteESignId = ', JSON.stringify(route.params.deleteESignId)); // blup
       // console.warn('eSignsArray = ', JSON.stringify(eSignsArray)); // blup
       // let eSignsArray = getESignsArray();
       // console.warn('eSignsArray = ', JSON.stringify(eSignsArray)); // blup
@@ -83,15 +82,17 @@ function HomeScreen({ navigation, route }) {
   // };
 
   const initScreen = async () => {
-    // console.warn('eSignsArray = ', JSON.stringify(eSignsArray)); // blup
     // get the eSignsArray when it's empty
     if (eSignsArray.length === 0) {
-      eSignsStorage.getESignsArray();
+      setESignsArray(await eSignsStorage.getESignsArray());
     }
     // update the eSignsArray also regularly to recognice if an image was added or removed
     setTimeout(() => {
       if (eSignsArray.length > 0) {
-        eSignsStorage.getESignsArray();
+        const asyncFunction = async () => {
+          setESignsArray(await eSignsStorage.getESignsArray());
+        };
+        asyncFunction();
       }
     }, 100); // blup: this is quite ugly xD
   };
@@ -110,7 +111,6 @@ function HomeScreen({ navigation, route }) {
                 route={route}
                 eSign={eSign}
                 originScreen="Home"
-                deleteESign={eSignsStorage.deleteESign}
                 //name={eSign.name}
                 //images={[{ path: `${RNFS.PicturesDirectoryPath}/Zelda/zelda.jpg`, pos: 0 }, { path: `${PATHS.IMAGES}/moby.jpg`, pos: 1 }]} // blup
               />
@@ -120,23 +120,27 @@ function HomeScreen({ navigation, route }) {
 
         <Button block transparent style={{ marginTop: 20 }}>
           <TouchableOpacity
-            onPress={() => {
-              eSignsStorage.addESign();
+            onPress={async () => {
+              await eSignsStorage.addESign();
+              const eSigns = await eSignsStorage.getESignsArray();
+              setESignsArray(eSigns);
             }}
           >
             <Icon name="add-circle" style={{ color: 'orange', fontSize: 40 }} />
           </TouchableOpacity>
         </Button>
 
-        {/* <Button block transparent>
+        <Button block transparent>
           <TouchableOpacity
-            onPress={() => {
-              deleteESign();
+            onPress={async () => {
+              await eSignsStorage.deleteESign();
+              const eSigns = await eSignsStorage.getESignsArray();
+              setESignsArray(eSigns);
             }}
           >
             <Icon name="remove-circle" style={{ color: 'red', fontSize: 40 }} />
           </TouchableOpacity>
-        </Button> */}
+        </Button>
 
       </Content>
     </Container>

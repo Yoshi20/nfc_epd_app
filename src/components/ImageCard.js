@@ -6,20 +6,20 @@ import { Col, Row, Grid } from 'react-native-easy-grid';
 import { UIActivityIndicator } from 'react-native-indicators';
 import ImageLoad from 'react-native-image-placeholder';
 
-import { ST25DV } from '../services';
+import { eSignsStorage, ST25DV } from '../services';
 
 function ImageCard(props) {
   const {
     navigation,
     route,
+    eSignId,
     image,
+    updateImage,
     originScreen,
+    setImagesArray,
     isImageUploadAllowed,
     uploadActivatedCallback,
     uploadFinishedCallback,
-    deleteImage,
-    moveImageDown,
-    updateImage,
     imageData
   } = props;
 
@@ -179,8 +179,9 @@ function ImageCard(props) {
                         },
                         {
                           text: 'Ja',
-                          onPress: () => {
-                            deleteImage(image.id);
+                          onPress: async () => {
+                            const eSign = await eSignsStorage.deleteImage(eSignId, image.id);
+                            setImagesArray(eSign.images);
                           }
                         }
                       ],
@@ -197,8 +198,9 @@ function ImageCard(props) {
               <Button transparent disabled>
                 <TouchableOpacity
                   disabled={route.params?.originScreen === 'Vorlagen'}
-                  onPress={() => {
-                    moveImageDown(image.id);
+                  onPress={async () => {
+                    const eSign = await eSignsStorage.moveImageDown(eSignId, image.id);
+                    setImagesArray(eSign.images);
                   }}
                 >
                   <Icon type="MaterialCommunityIcons" name="arrow-down-bold" style={{ color: ((route.params?.originScreen === 'Vorlagen') ? 'gray' : 'balck'), fontSize: 40, marginTop: 5, marginLeft: -3, marginRight: 0 }} />

@@ -5,7 +5,7 @@ import { Col, Row, Grid } from 'react-native-easy-grid';
 import AsyncStorage from '@react-native-community/async-storage';
 import RNFS from 'react-native-fs';
 import ImageCard from '../components/ImageCard';
-import Logger from '../services';
+import { eSignsStorage, Logger } from '../services';
 
 import image1Raw from '../assets/images/testRaw/image1';
 import image5Raw from '../assets/images/testRaw/image5';
@@ -26,10 +26,6 @@ function ESignScreen({ navigation, route }) { // route.params: eSign, originScre
   //     // For example, send the post to the server
   //   }
   // }, [route.params?.post]);
-
-  const deleteThisESign = async () => {
-    await route.params.deleteESign(route.params?.eSign.id);
-  };
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -56,9 +52,9 @@ function ESignScreen({ navigation, route }) { // route.params: eSign, originScre
                     },
                     {
                       text: 'Ja',
-                      onPress: () => {
-                        deleteThisESign();
-                        navigation.navigate(route.params.originScreen + 'Screen');
+                      onPress: async () => {
+                        await eSignsStorage.deleteESign(route.params?.eSign.id);
+                        navigation.navigate(`${route.params.originScreen}Screen`);
                       }
                     }
                   ],
@@ -109,99 +105,12 @@ function ESignScreen({ navigation, route }) { // route.params: eSign, originScre
     setUploadActivated(false);
   }
 
-  const updateESignsArray = async (newImagesArray) => {
+  const updateCurrentImage = async (oldImageId, image) => {
     try {
-      // get eSignsArray from the AsyncStorage
-      const jsonValue = await AsyncStorage.getItem('eSignsArray');
-      const eSignsArray = JSON.parse(jsonValue != null ? jsonValue : []);
-      // find index of the current eSign
-      const currentESignIndex = eSignsArray.findIndex((eS) => {
-        return eS.id === route.params?.eSign.id;
-      });
-      // update eSignsArray in the AsyncStorage
-      eSignsArray[currentESignIndex].images = newImagesArray;
-      await AsyncStorage.setItem('eSignsArray', JSON.stringify(eSignsArray));
+      const eSign = await eSignsStorage.updateImage(route.params?.eSign.id, oldImageId, image);
+      setImagesArray(eSign.images);
     } catch (e) {
-      Logger.error('updateESignsArray failed! Error:', e);
-    }
-  };
-
-  const addImage = async () => {
-    try {
-      const newImage = {
-        // random hex string id with 16 characters:
-        id: (Math.random().toString(16).substring(2, 10) + Math.random().toString(16).substring(2, 10)),
-        path: '',
-      };
-      const newImagesArray = imagesArray.slice(); // copy the state array
-      newImagesArray.push(newImage);
-      setImagesArray(newImagesArray);
-      updateESignsArray(newImagesArray);
-      return newImage;
-    } catch (e) {
-      Logger.error('AddImage failed! Error:', e);
-      return null;
-    }
-  };
-
-  const deleteImage = async (id) => {
-    try {
-      const newImagesArray = imagesArray.slice(); // copy the state array
-      let image;
-      if (id) {
-        // find index of the image to delete
-        const currentImageIndex = newImagesArray.findIndex((img) => {
-          return img.id === id;
-        });
-        image = newImagesArray.splice(currentImageIndex, 1)[0]; // this removes one image at given position
-      } else {
-        image = newImagesArray.pop();
-      }
-      if (image.path) {
-        await RNFS.unlink(image.path).catch((e) => {
-          Logger.error('delete file failed! Error:', e);
-        });
-      }
-      setImagesArray(newImagesArray);
-      updateESignsArray(newImagesArray);
-    } catch (e) {
-      Logger.error('deleteImage failed! Error:', e);
-    }
-  };
-
-  const updateImage = async (id, image) => {
-    try {
-      const newImagesArray = imagesArray.slice(); // copy the state array
-      // find index of the image to update
-      const currentImageIndex = newImagesArray.findIndex((img) => {
-        return img.id === id;
-      });
-      if (currentImageIndex >= 0) {
-        /* replace image */
-        newImagesArray.splice(currentImageIndex, 1, image); // this removes one image at given position
-      } else {
-        /* add new image */
-        newImagesArray.push(image);
-      }
-      setImagesArray(newImagesArray);
-      updateESignsArray(newImagesArray);
-    } catch (e) {
-      Logger.error('updateImage failed! Error:', e);
-    }
-  };
-
-  const moveImageDown = async (id) => {
-    try {
-      const newImagesArray = imagesArray.slice(); // copy the state array
-      // find index of the image to move
-      const currentImageIndex = newImagesArray.findIndex((img) => {
-        return img.id === id;
-      });
-      newImagesArray.splice(currentImageIndex + 1, 0, newImagesArray.splice(currentImageIndex, 1)[0]);
-      setImagesArray(newImagesArray);
-      updateESignsArray(newImagesArray);
-    } catch (e) {
-      Logger.error('moveImage failed! Error:', e);
+      Logger.error('updateCurrentImage failed! Error:', e);
     }
   };
 
@@ -235,13 +144,13 @@ function ESignScreen({ navigation, route }) { // route.params: eSign, originScre
               <ImageCard
                 navigation={navigation}
                 route={route}
+                eSignId={route.params?.eSign.id}
                 image={image}
+                updateImage={updateCurrentImage}
                 originScreen={route.params?.originScreen}
+                setImagesArray={setImagesArray}
                 isImageUploadAllowed={!uploadActivated}
                 uploadActivatedCallback={uploadActivatedCallback}
-                deleteImage={deleteImage}
-                moveImageDown={moveImageDown}
-                updateImage={updateImage}
                 uploadFinishedCallback={uploadFinishedCallback}
                 // imageData={image1Raw}
                 imageData={image.byteArray}
@@ -253,15 +162,14 @@ function ESignScreen({ navigation, route }) { // route.params: eSign, originScre
         {(route.params?.originScreen !== 'Vorlagen') && (
           <Button block transparent style={{ marginTop: 20 }}>
             <TouchableOpacity
-              onPress={() => {
-                (async function () {
-                  const newImage = await addImage();
-                  navigation.navigate('EditImageScreen', {
-                    title: 'Neues Bild',
-                    image: newImage,
-                    updateImage: updateImage.bind()
-                  });
-                }());
+              onPress={async () => {
+                const newImage = await eSignsStorage.addImage(route.params?.eSign.id);
+                // setImagesArray(eSign.images); // blup
+                navigation.navigate('EditImageScreen', {
+                  title: 'Neues Bild',
+                  image: newImage,
+                  updateImage: updateCurrentImage.bind(),
+                });
               }}
             >
               <Icon name="add-circle" style={{ color: 'orange', fontSize: 40 }} />
@@ -271,8 +179,9 @@ function ESignScreen({ navigation, route }) { // route.params: eSign, originScre
         {/* {(route.params?.originScreen !== 'Vorlagen') && (
           <Button block transparent>
             <TouchableOpacity
-              onPress={() => {
-                deleteImage();
+              onPress={async () => {
+                const eSign = await eSignsStorage.deleteImage(route.params?.eSign.id);
+                setImagesArray(eSign.images);
               }}
             >
               <Icon name="remove-circle" style={{ color: 'red', fontSize: 40 }} />

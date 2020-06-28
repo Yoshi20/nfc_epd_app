@@ -12,14 +12,13 @@ function ESignCard(props) {
   const {
     navigation,
     eSign,
-    originScreen,
-    deleteESign
+    originScreen
   } = props;
   return (
     <Card style={{ width: '48%' }}>
       <TouchableOpacity
         onPress={() => {
-          navigation.navigate('ESignScreen', { eSign, originScreen, deleteESign });
+          navigation.navigate('ESignScreen', { eSign, originScreen });
         }}
       >
         <CardItem cardBody style={{ padding: 5, paddingBottom: 5 }}>

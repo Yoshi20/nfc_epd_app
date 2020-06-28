@@ -3,6 +3,7 @@ import { TextInput, Alert, TouchableOpacity } from 'react-native';
 import { Container, Content, Button, Icon, Text, View} from 'native-base';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import AsyncStorage from '@react-native-community/async-storage';
+import RNFS from 'react-native-fs';
 import ImageCard from '../components/ImageCard';
 import Logger from '../services';
 
@@ -146,14 +147,20 @@ function ESign({ navigation, route }) { // route.params: eSign, originScreen, de
   const deleteImage = async (id) => {
     try {
       const newImagesArray = imagesArray.slice(); // copy the state array
+      let image;
       if (id) {
         // find index of the image to delete
         const currentImageIndex = newImagesArray.findIndex((img) => {
           return img.id === id;
         });
-        newImagesArray.splice(currentImageIndex, 1); // this removes one image at given position
+        image = newImagesArray.splice(currentImageIndex, 1)[0]; // this removes one image at given position
       } else {
-        newImagesArray.pop();
+        image = newImagesArray.pop();
+      }
+      if (image.path) {
+        await RNFS.unlink(image.path).catch((e) => {
+          Logger.error('delete file failed! Error:', e);
+        });
       }
       setImagesArray(newImagesArray);
       updateESignsArray(newImagesArray);
@@ -262,7 +269,7 @@ function ESign({ navigation, route }) { // route.params: eSign, originScreen, de
             </TouchableOpacity>
           </Button>
         )}
-        {(route.params?.originScreen !== 'Vorlagen') && (
+        {/* {(route.params?.originScreen !== 'Vorlagen') && (
           <Button block transparent>
             <TouchableOpacity
               onPress={() => {
@@ -272,7 +279,7 @@ function ESign({ navigation, route }) { // route.params: eSign, originScreen, de
               <Icon name="remove-circle" style={{ color: 'red', fontSize: 40 }} />
             </TouchableOpacity>
           </Button>
-        )}
+        )} */}
 
       </Content>
     </Container>

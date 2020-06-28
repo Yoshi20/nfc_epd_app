@@ -55,14 +55,29 @@ function Home({ navigation, route }) {
   const deleteESign = async (id) => {
     try {
       const newESignsArray = eSignsArray.slice(); // copy the state array
+      let eSign;
       if (id) {
         // find index of the eSign to delete
         const currentESignIndex = newESignsArray.findIndex((eS) => {
           return eS.id === id;
         });
-        newESignsArray.splice(currentESignIndex, 1); // this removes one eSign at given position
+        eSign = newESignsArray.splice(currentESignIndex, 1)[0]; // this removes one eSign at given position
       } else {
-        newESignsArray.pop();
+        eSign = newESignsArray.pop();
+      }
+      // delete all images of the eSign
+      const results = [];
+      for (let n = 0; n < eSign.images.length; n += 1) {
+        if (eSign.images[n].path) {
+          results.push(RNFS.unlink(eSign.images[n].path).catch((e) => {
+            Logger.error('delete file failed! Error:', e);
+          }));
+        }
+      }
+      try {
+        await Promise.all(results);
+      } catch {
+        // ignore File does not exist errors
       }
       saveESignsArray(newESignsArray);
     } catch (e) {
@@ -81,7 +96,7 @@ function Home({ navigation, route }) {
       if (eSignsArray.length > 0) {
         getESignsArray();
       }
-    }, 2000);
+    }, 100); // blup: this is quite ugly xD
   };
 
   initScreen();

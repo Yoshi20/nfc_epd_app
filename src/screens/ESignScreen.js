@@ -153,7 +153,7 @@ function ESignScreen({ navigation, route }) { // route.params: eSign, originScre
         const currentImageIndex = newImagesArray.findIndex((img) => {
           return img.id === id;
         });
-        image = newImagesArray.splice(currentImageIndex, 1)[0]; // this removes one image at given position
+        [image] = newImagesArray.splice(currentImageIndex, 1); // this removes one image at given position
       } else {
         image = newImagesArray.pop();
       }
@@ -256,7 +256,7 @@ function ESignScreen({ navigation, route }) { // route.params: eSign, originScre
               onPress={() => {
                 (async function () {
                   const newImage = await addImage();
-                  navigation.navigate('EditImageScreen', {
+                  navigation.navigate('ImageScreen', {
                     title: 'Neues Bild',
                     image: newImage,
                     updateImage: updateImage.bind()

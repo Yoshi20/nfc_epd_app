@@ -2,7 +2,7 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import ESignScreen from '../../../screens/ESignScreen';
-import EditImageScreen from '../../../screens/EditImageScreen';
+import ImageScreen from '../../../screens/ImageScreen';
 import BottomTabNavigator from './BottomTabNavigator';
 
 const RootStackNavigator = () => {
@@ -25,9 +25,9 @@ const RootStackNavigator = () => {
         component={ESignScreen}
       />
       <Stack.Screen
-        name="EditImageScreen"
+        name="ImageScreen"
         options={{ headerTitle: 'Bild bearbeiten' }}
-        component={EditImageScreen}
+        component={ImageScreen}
       />
     </Stack.Navigator>
   );

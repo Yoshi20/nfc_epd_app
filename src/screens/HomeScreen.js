@@ -61,7 +61,7 @@ function HomeScreen({ navigation, route }) {
         const currentESignIndex = newESignsArray.findIndex((eS) => {
           return eS.id === id;
         });
-        eSign = newESignsArray.splice(currentESignIndex, 1)[0]; // this removes one eSign at given position
+        [eSign] = newESignsArray.splice(currentESignIndex, 1); // this removes one eSign at given position
       } else {
         eSign = newESignsArray.pop();
       }

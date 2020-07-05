@@ -46,6 +46,7 @@ function ESignCard(props) {
                   onPress: async () => {
                     setSelected(false);
                     await eSignsStorage.deleteESign(eSign.id);
+                    navigation.navigate(`${originScreen}Screen`); // ugly workaround to trigger a reload
                   }
                 }
               ],

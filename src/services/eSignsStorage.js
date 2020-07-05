@@ -38,7 +38,7 @@ async function addESign() {
       images: [],
     };
     eSignsArray.push(newESign);
-    saveESignsArray(eSignsArray);
+    await saveESignsArray(eSignsArray);
   } catch (e) {
     Logger.error('AddESign failed! Error:', e);
   }
@@ -70,7 +70,7 @@ async function deleteESign(id) {
     } catch {
       // ignore File does not exist errors
     }
-    saveESignsArray(eSignsArray);
+    await saveESignsArray(eSignsArray);
   } catch (e) {
     Logger.error('deleteESign failed! Error:', e);
   }
@@ -85,14 +85,14 @@ function findESign(id) {
 
 async function updateESign(eSign) {
   try {
-    getESignsArray();
+    await getESignsArray();
     // find index of the current eSign
     const currentESignIndex = eSignsArray.findIndex((eS) => {
       return eS.id === eSign.id;
     });
     // update eSignsArray in the AsyncStorage
     eSignsArray[currentESignIndex] = eSign;
-    saveESignsArray(eSignsArray);
+    await saveESignsArray(eSignsArray);
   } catch (e) {
     Logger.error('updateESign failed! Error:', e);
   }
@@ -107,7 +107,7 @@ async function addImage(eSignId) {
     };
     const eSign = findESign(eSignId);
     eSign.images.push(newImage);
-    updateESign(eSign);
+    await updateESign(eSign);
     return eSign;
   } catch (e) {
     Logger.error('AddImage failed! Error:', e);
@@ -133,7 +133,7 @@ async function deleteImage(eSignId, imageId) {
         Logger.error('delete file failed! Error:', e);
       });
     }
-    updateESign(eSign);
+    await updateESign(eSign);
     return eSign;
   } catch (e) {
     Logger.error('deleteImage failed! Error:', e);
@@ -155,7 +155,7 @@ async function updateImage(eSignId, imageId, image) {
       /* add new image */
       eSign.images.push(image);
     }
-    updateESign(eSign);
+    await updateESign(eSign);
     return eSign;
   } catch (e) {
     Logger.error('updateImage failed! Error:', e);
@@ -171,7 +171,7 @@ async function moveImageDown(eSignId, imageId) {
       return img.id === imageId;
     });
     eSign.images.splice(currentImageIndex + 1, 0, eSign.images.splice(currentImageIndex, 1)[0]);
-    updateESign(eSign);
+    await updateESign(eSign);
     return eSign;
   } catch (e) {
     Logger.error('moveImage failed! Error:', e);

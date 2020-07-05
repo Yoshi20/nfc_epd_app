@@ -5,6 +5,7 @@ import { Button, Icon, Text, Toast, Card, CardItem } from 'native-base';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import ImageLoad from 'react-native-image-placeholder';
 import RNFS from 'react-native-fs';
+import { eSignsStorage } from '../services';
 
 import { PATHS } from '../constants';
 
@@ -14,14 +15,46 @@ function ESignCard(props) {
     eSign,
     originScreen
   } = props;
+
+  const [selected, setSelected] = useState(false);
+
   return (
     <Card style={{ width: '48%' }}>
       <TouchableOpacity
         onPress={() => {
-          navigation.navigate('ESignScreen', { eSign, originScreen });
+          if (selected) setSelected(false);
+          else navigation.navigate('ESignScreen', { eSign, originScreen });
+        }}
+        onLongPress={() => {
+          if (originScreen === 'Vorlagen') {
+            navigation.navigate('ESignScreen', { eSign, originScreen });
+          } else {
+            setSelected(!selected);
+            Alert.alert(
+              'Dieses E-Sign löschen?',
+              'Alle Bilder dieses E-Singes werden gelöscht. Dieser Schritt kann nicht rückgängig gemacht werden.',
+              [
+                {
+                  text: 'Nein',
+                  style: 'cancel',
+                  onPress: () => {
+                    setSelected(false);
+                  }
+                },
+                {
+                  text: 'Ja',
+                  onPress: async () => {
+                    setSelected(false);
+                    await eSignsStorage.deleteESign(eSign.id);
+                  }
+                }
+              ],
+              { cancelable: false }
+            );
+          }
         }}
       >
-        <CardItem cardBody style={{ padding: 5, paddingBottom: 5 }}>
+        <CardItem cardBody style={{ padding: 5, paddingBottom: 5, backgroundColor: selected ? 'lightblue' : 'white' }}>
           <Grid>
             <Row size={20} style={{ paddingBottom: 5 }}>
               <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>

@@ -130,7 +130,7 @@ function HomeScreen({ navigation, route }) {
           </TouchableOpacity>
         </Button>
 
-        <Button block transparent>
+        {/* <Button block transparent>
           <TouchableOpacity
             onPress={async () => {
               await eSignsStorage.deleteESign();
@@ -140,7 +140,7 @@ function HomeScreen({ navigation, route }) {
           >
             <Icon name="remove-circle" style={{ color: 'red', fontSize: 40 }} />
           </TouchableOpacity>
-        </Button>
+        </Button> */}
 
       </Content>
     </Container>

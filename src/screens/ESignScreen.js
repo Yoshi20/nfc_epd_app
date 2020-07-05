@@ -163,11 +163,11 @@ function ESignScreen({ navigation, route }) { // route.params: eSign, originScre
           <Button block transparent style={{ marginTop: 20 }}>
             <TouchableOpacity
               onPress={async () => {
-                const newImage = await eSignsStorage.addImage(route.params?.eSign.id);
-                // setImagesArray(eSign.images); // blup
+                const eSign = await eSignsStorage.addImage(route.params?.eSign.id);
+                setImagesArray(eSign.images);
                 navigation.navigate('EditImageScreen', {
                   title: 'Neues Bild',
-                  image: newImage,
+                  image: eSign.images[eSign.images.length - 1],
                   updateImage: updateCurrentImage.bind(),
                 });
               }}

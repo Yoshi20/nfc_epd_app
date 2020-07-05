@@ -108,7 +108,7 @@ async function addImage(eSignId) {
     const eSign = findESign(eSignId);
     eSign.images.push(newImage);
     updateESign(eSign);
-    return newImage;
+    return eSign;
   } catch (e) {
     Logger.error('AddImage failed! Error:', e);
     return null;

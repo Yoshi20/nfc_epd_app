@@ -165,7 +165,7 @@ function ESignScreen({ navigation, route }) { // route.params: eSign, originScre
               onPress={async () => {
                 const eSign = await eSignsStorage.addImage(route.params?.eSign.id);
                 setImagesArray(eSign.images);
-                navigation.navigate('EditImageScreen', {
+                navigation.navigate('ImageScreen', {
                   title: 'Neues Bild',
                   image: eSign.images[eSign.images.length - 1],
                   updateImage: updateCurrentImage.bind(),

@@ -104,4 +104,5 @@ The ImageCard consists of a single image and some action icons. A click on the e
 ## Links
 - https://www.waveshare.com/product/displays/e-paper/epaper-1/7.5inch-e-paper.htm
 - http://www.marvinj.org/en/index.html
-- https://fengyuanchen.github.io/cropperjs/
+- https://github.com/ivpusic/react-native-image-crop-picker
+- https://github.com/lukechilds/merge-images
